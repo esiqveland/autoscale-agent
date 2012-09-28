@@ -4,3 +4,11 @@
 *.jar
 *.war
 *.ear
+
+# Other #
+.DS_Store
+.classpath
+.project
+.settings/*
+target/*
+*~
