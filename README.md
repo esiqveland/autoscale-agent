@@ -46,7 +46,6 @@ switch(type) {
 	case MIN_DISK_USE:
 		scaleDown();
 		break;
-		
 	case MAX_MEMORY_USE:
 	case MAX_CPU_USE:
 	case MAX_DISK_USE:
