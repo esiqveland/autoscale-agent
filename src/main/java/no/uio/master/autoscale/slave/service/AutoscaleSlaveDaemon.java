@@ -5,6 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import no.uio.master.autoscale.slave.config.Config;
 import no.uio.master.autoscale.slave.stat.NodeStatus;
 import no.uio.master.autoscale.slave.stat.SlaveStatus;
 
@@ -18,8 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class AutoscaleSlaveDaemon implements Runnable {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlaveDaemon.class);
-	private static ScheduledExecutorService executor;
-	private static AutoscaleSlaveServer server;
 	private static final Integer DEFAULT_SERVER_PORT = 7799;
 	
 	private static NodeStatus nodeStatus;
@@ -30,24 +29,12 @@ public class AutoscaleSlaveDaemon implements Runnable {
 		LOG.debug("Autoscale slave-daemon started");
 		slaveStatus = SlaveStatus.RUNNING; //TODO: Set to IDLE
 		nodeStatus = new NodeStatus();
-		initServer();
 	}
 	
 	public AutoscaleSlaveDaemon(SlaveStatus status) {
 		LOG.debug("Autoscale slave-daemon started with status = " + status.toString().toLowerCase());
 		slaveStatus = status;
 		nodeStatus = new NodeStatus();
-		initServer();
-	}
-	
-	public static void initServer() {
-		try {
-			server = new AutoscaleSlaveServer(DEFAULT_SERVER_PORT);
-			executor = Executors.newSingleThreadScheduledExecutor();
-			executor.scheduleAtFixedRate(server, 0, 1, TimeUnit.SECONDS);
-		} catch (IOException e) {
-			LOG.error("Failed to initialize server");
-		}
 	}
 
 
@@ -56,10 +43,11 @@ public class AutoscaleSlaveDaemon implements Runnable {
 		switch(slaveStatus) {
 		case RUNNING:
 			//systemStatus();
-			LOG.debug("Running...");
+			LOG.debug("Running..." + Config.intervall_timer);
 			break;
 			
 		case IDLE:
+			LOG.debug("Idle...");
 		default:
 			break;
 		}

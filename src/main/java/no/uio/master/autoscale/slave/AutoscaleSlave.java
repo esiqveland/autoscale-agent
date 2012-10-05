@@ -1,10 +1,11 @@
 package no.uio.master.autoscale.slave;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import no.uio.master.autoscale.slave.service.AutoscaleSlaveDaemon;
+import no.uio.master.autoscale.slave.service.AutoscaleSlaveServer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class AutoscaleSlave {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlave.class);
 
 	private static ScheduledExecutorService executor;
-	private static AutoscaleSlaveDaemon daemon;
+	private static AutoscaleSlaveServer server;
 	
 	private static final String DEFAULT_HOST = "127.0.0.1";
 	private static final int DEFAULT_PORT = 7299;
@@ -29,9 +30,13 @@ public class AutoscaleSlave {
 	
 	public static void main(String[] args) {
 		LOG.debug("Autoscale slave invoked...");
-		daemon = new AutoscaleSlaveDaemon();
+		try {
+			server = new AutoscaleSlaveServer();
+		} catch (IOException e) {
+			LOG.error("Failed to initialize slave server");
+		}
 		executor = Executors.newSingleThreadScheduledExecutor();
-		executor.scheduleAtFixedRate(daemon, 0, INTERVALL_TIMER, TimeUnit.SECONDS);
+		executor.scheduleAtFixedRate(server, 0, INTERVALL_TIMER, TimeUnit.SECONDS);
 		LOG.info("Invoked");
 	}
 	

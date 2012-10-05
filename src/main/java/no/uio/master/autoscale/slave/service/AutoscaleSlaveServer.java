@@ -2,7 +2,14 @@ package no.uio.master.autoscale.slave.service;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import no.uio.master.autoscale.slave.config.Config;
+import no.uio.master.autoscale.slave.stat.SlaveStatus;
+import no.uio.master.autoslave.model.SlaveMessage;
+import no.uio.master.autoslave.model.enumerator.SlaveMessageType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +19,9 @@ public class AutoscaleSlaveServer implements Runnable {
 	private static final Integer DEFAULT_PORT = 7799;
 	
 	private static ServerSocket serverSocket = null;
+	
+	private static AutoscaleSlaveDaemon daemon = null;
+	private static ScheduledExecutorService executor;
 	
 	
 	private static Integer port;
@@ -30,6 +40,63 @@ public class AutoscaleSlaveServer implements Runnable {
 
 	@Override
 	public void run() {
-			CommunicationManager.readMessage(serverSocket);
+			SlaveMessage msg = CommunicationManager.readMessage(serverSocket);
+			performAction(msg);
+	}
+	
+	
+	/**
+	 * Perform action, based upon SlaveMessage.type
+	 * @param msg
+	 */
+	private void performAction(SlaveMessage msg) {
+		SlaveMessageType type = msg.getType();
+		switch(type) {
+		case INITIALIZATION:
+		case UPDATE:
+			updateConfig(msg);
+			initDaemon();
+			break;
+			
+		case STOP_DAEMON:
+			stopDaemon();
+			break;
+		}
+		
+	}
+	
+	
+	/**
+	 * Update local Configurations with configurations received from master
+	 * @param msg
+	 */
+	private void updateConfig(SlaveMessage msg) {
+		LOG.debug("Update configurations...");
+		Config.intervall_timer = (Integer)msg.getMap().get("intervall_timer");
+		Config.threshold_breach_limit = (Integer)msg.getMap().get("threshold_breach_limit");
+		Config.min_memory_usage = (Double)msg.getMap().get("min_memory_usage");
+		Config.max_memory_usage = (Double)msg.getMap().get("max_memory_usage");
+		Config.min_free_disk_space = (Long)msg.getMap().get("min_free_disk_space");
+		Config.max_free_disk_space = (Long)msg.getMap().get("max_free_disk_space");
+	}
+	
+	/**
+	 * Initialize / Re-initialize daemon
+	 */
+	private void initDaemon() {
+		if(null != daemon) {
+			executor.shutdownNow();
+		}
+		daemon = new AutoscaleSlaveDaemon(SlaveStatus.RUNNING);
+		executor = Executors.newSingleThreadScheduledExecutor();
+		executor.scheduleAtFixedRate(daemon, 0, Config.intervall_timer, TimeUnit.SECONDS);
+	}
+	
+	/**
+	 * Shutdown currently running daemon (NOT the server)
+	 */
+	private void stopDaemon() {
+		LOG.debug("Stopping daemon");
+		executor.shutdown();
 	}
 }

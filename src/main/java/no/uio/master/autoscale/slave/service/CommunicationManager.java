@@ -28,7 +28,7 @@ public class CommunicationManager {
 			inputStream = new ObjectInputStream(connection.getInputStream());
 			
 			msg = (SlaveMessage)inputStream.readObject();
-			LOG.debug("Read message: " + msg);
+			LOG.debug("Read message");
 		} catch (Exception e) {
 			LOG.error("Failed to read message - ",e);
 		}
