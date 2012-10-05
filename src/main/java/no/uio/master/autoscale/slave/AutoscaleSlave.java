@@ -1,7 +1,5 @@
 package no.uio.master.autoscale.slave;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
