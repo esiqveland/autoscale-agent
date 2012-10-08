@@ -8,8 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import no.uio.master.autoscale.slave.config.Config;
 import no.uio.master.autoscale.slave.stat.SlaveStatus;
-import no.uio.master.autoslave.model.SlaveMessage;
-import no.uio.master.autoslave.model.enumerator.SlaveMessageType;
+import no.uio.master.model.SlaveMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,9 +48,9 @@ public class AutoscaleSlaveServer implements Runnable {
 	 * Perform action, based upon SlaveMessage.type
 	 * @param msg
 	 */
-	private void performAction(SlaveMessage msg) {
-		SlaveMessageType type = msg.getType();
-		switch(type) {
+	public void performAction(SlaveMessage msg) {
+		
+		switch(msg.getType()) {
 		case INITIALIZATION:
 		case UPDATE:
 			updateConfig(msg);
@@ -60,6 +59,10 @@ public class AutoscaleSlaveServer implements Runnable {
 			
 		case STOP_DAEMON:
 			stopDaemon();
+			break;
+			
+		default:
+			LOG.error("Slave message-type didn't match any predefined types!");
 			break;
 		}
 		

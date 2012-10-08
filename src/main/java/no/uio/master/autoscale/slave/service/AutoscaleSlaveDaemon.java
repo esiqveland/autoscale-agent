@@ -1,10 +1,5 @@
 package no.uio.master.autoscale.slave.service;
 
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import no.uio.master.autoscale.slave.config.Config;
 import no.uio.master.autoscale.slave.stat.NodeStatus;
 import no.uio.master.autoscale.slave.stat.SlaveStatus;
