@@ -6,9 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import no.uio.master.autoscale.model.SlaveMessage;
 import no.uio.master.autoscale.slave.config.Config;
-import no.uio.master.autoscale.slave.stat.SlaveStatus;
-import no.uio.master.model.SlaveMessage;
+import no.uio.master.autoscale.slave.stat.NodeStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +22,7 @@ public class AutoscaleSlaveServer implements Runnable {
 	private static AutoscaleSlaveDaemon daemon = null;
 	private static ScheduledExecutorService executor;
 	
+	private static NodeStatus status = new NodeStatus();
 	
 	private static Integer port;
 	
@@ -41,6 +42,7 @@ public class AutoscaleSlaveServer implements Runnable {
 	public void run() {
 			SlaveMessage msg = CommunicationManager.readMessage(serverSocket);
 			performAction(msg);
+			
 	}
 	
 	
@@ -81,6 +83,7 @@ public class AutoscaleSlaveServer implements Runnable {
 		Config.max_memory_usage = (Double)msg.getMap().get("max_memory_usage");
 		Config.min_free_disk_space = (Long)msg.getMap().get("min_free_disk_space");
 		Config.max_free_disk_space = (Long)msg.getMap().get("max_free_disk_space");
+		Config.storage_location = (String)msg.getMap().get("storage_location");
 	}
 	
 	/**
@@ -90,7 +93,7 @@ public class AutoscaleSlaveServer implements Runnable {
 		if(null != daemon) {
 			executor.shutdownNow();
 		}
-		daemon = new AutoscaleSlaveDaemon(SlaveStatus.RUNNING);
+		daemon = new AutoscaleSlaveDaemon();
 		executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleAtFixedRate(daemon, 0, Config.intervall_timer, TimeUnit.SECONDS);
 	}

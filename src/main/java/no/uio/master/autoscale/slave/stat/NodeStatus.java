@@ -1,10 +1,15 @@
 package no.uio.master.autoscale.slave.stat;
 
+import javax.management.RuntimeErrorException;
+
+import no.uio.master.autoscale.slave.config.Config;
+
 import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.DirStat;
 import org.hyperic.sigar.DirUsage;
 import org.hyperic.sigar.DiskUsage;
+import org.hyperic.sigar.FileSystem;
 import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
@@ -38,6 +43,7 @@ public class NodeStatus {
 			memUsed = mem.getUsedPercent();
 		} catch (Exception e) {
 			LOG.error("Failed to get memory usage",e);
+			e.printStackTrace();
 		}
 		
 		return memUsed;
@@ -61,16 +67,37 @@ public class NodeStatus {
 		return cpuUsed;
 	}
 
+	/**
+	 * Retrieve disk-usage in percentage
+	 * @return
+	 */
 	public Double getDiskUsage() {
 		Double diskUsed = 0.0;
 		
 		try {
-			FileSystemUsage fsUsage = sigar.getFileSystemUsage("/"); //TODO: Cassandra-storage-location
+			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			diskUsed = fsUsage.getUsePercent();
 		} catch (SigarException e) {
 			e.printStackTrace();
 		} 
 		
 		return diskUsed;
+	}
+	
+	/**
+	 * Retrieve diskusage in size
+	 * @return
+	 */
+	public Long getDiskSpaceUsed() {
+		Long space = 0L;
+		
+		try {
+			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
+			space = fsUsage.getUsed();
+		} catch (SigarException e) {
+			e.printStackTrace();
+		} 
+		
+		return space;
 	}
 }

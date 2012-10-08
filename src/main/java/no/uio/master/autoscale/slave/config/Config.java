@@ -8,5 +8,5 @@ public class Config {
 	public static Double max_memory_usage = 90.0;
 	public static Long min_free_disk_space = 60L;
 	public static Long max_free_disk_space = 20000L;
-
+	public static String storage_location = "/";
 }
