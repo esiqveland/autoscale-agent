@@ -1,6 +1,8 @@
 package no.uio.master.autoscale.slave.stat;
 
 import no.uio.master.autoscale.slave.config.Config;
+import no.uio.master.autoscale.slave.message.BreachMessage;
+import no.uio.master.autoscale.slave.message.enumerator.BreachType;
 import no.uio.master.autoscale.slave.net.Communicator;
 
 import org.slf4j.Logger;
@@ -39,7 +41,9 @@ public class NodeMonitor {
 			
 			// Scale down
 			if(diskMinBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Disk breach - Sending scale down message...");
+				LOG.debug("Sending disk minusage message. Used: " + diskUsed + " bytes");
+				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MIN_DISK_USAGE, diskUsed);
+				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMinBreachTimer = 0;
 			}
 		}
@@ -50,9 +54,9 @@ public class NodeMonitor {
 			
 			//Scale up
 			if(diskMaxBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Disk breach - Sending scale up message...");
-//				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MAX_DISK_USAGE, diskUsed);
-				communicator.sendMessage(Config.master_host, "Works!");
+				LOG.debug("Sending disk maxusage message. Used: " + diskUsed + " bytes");
+				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MAX_DISK_USAGE, diskUsed);
+				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMaxBreachTimer = 0;
 			}
 		}
@@ -75,7 +79,9 @@ public class NodeMonitor {
 			
 			if(memMinBreachTimer > Config.threshold_breach_limit) {
 				// Scale down!
-				LOG.debug("Memory breach - Sending scale down message...");
+				LOG.debug("Sending memory minusage message. Used: "+ memUsed + "%");
+				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MIN_MEMORY_USAGE, memUsed);
+				communicator.sendMessage(Config.master_host, breachMessage);
 				memMinBreachTimer = 0;
 			}
 		} 
@@ -87,7 +93,9 @@ public class NodeMonitor {
 			
 			if(memMaxBreachTimer > Config.threshold_breach_limit) {
 				// Scale up!
-				LOG.debug("Memory breach - Sending scale up message...");
+				LOG.debug("Sending memory maxusage message. Used: " + memUsed + "%");
+				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MAX_MEMORY_USAGE, memUsed);
+				communicator.sendMessage(Config.master_host, breachMessage);
 				memMinBreachTimer = 0;
 			}
 		}
