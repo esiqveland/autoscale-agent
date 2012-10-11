@@ -1,5 +1,7 @@
 package no.uio.master.autoscale.slave.service;
 
+import java.net.ServerSocket;
+
 import no.uio.master.autoscale.slave.stat.NodeMonitor;
 
 import org.slf4j.Logger;

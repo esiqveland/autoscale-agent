@@ -1,13 +1,13 @@
 package no.uio.master.autoscale.slave.service;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import no.uio.master.autoscale.model.SlaveMessage;
 import no.uio.master.autoscale.slave.config.Config;
+import no.uio.master.autoscale.slave.message.SlaveMessage;
+import no.uio.master.autoscale.slave.net.Communicator;
 import no.uio.master.autoscale.slave.stat.NodeStatus;
 
 import org.slf4j.Logger;
@@ -15,32 +15,20 @@ import org.slf4j.LoggerFactory;
 
 public class AutoscaleSlaveServer implements Runnable {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlaveServer.class);
-	private static final Integer DEFAULT_PORT = 7799;
-	
-	private static ServerSocket serverSocket = null;
+	private static Communicator communicator;
 	
 	private static AutoscaleSlaveDaemon daemon = null;
 	private static ScheduledExecutorService executor;
 	
 	private static NodeStatus status = new NodeStatus();
 	
-	private static Integer port;
-	
 	public AutoscaleSlaveServer() throws IOException {
-		port = DEFAULT_PORT;
-		serverSocket = new ServerSocket(port);
+		communicator = new Communicator(Config.slave_input_port, Config.slave_output_port);
 	}
-	
-	public AutoscaleSlaveServer(Integer port) throws IOException {
-		this.port = port;
-		serverSocket = new ServerSocket(port);
-	}
-
-	
 
 	@Override
 	public void run() {
-			SlaveMessage msg = CommunicationManager.readMessage(serverSocket);
+			SlaveMessage msg = (SlaveMessage)communicator.readMessage();
 			performAction(msg);
 			
 	}
@@ -84,6 +72,7 @@ public class AutoscaleSlaveServer implements Runnable {
 		Config.min_free_disk_space = (Long)msg.getMap().get("min_free_disk_space");
 		Config.max_free_disk_space = (Long)msg.getMap().get("max_free_disk_space");
 		Config.storage_location = (String)msg.getMap().get("storage_location");
+		Config.master_host = (String)msg.getMap().get("master_host");
 	}
 	
 	/**
