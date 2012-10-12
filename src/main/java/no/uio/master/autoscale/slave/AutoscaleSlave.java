@@ -23,9 +23,6 @@ public class AutoscaleSlave {
 	private static ScheduledExecutorService executor;
 	private static AutoscaleSlaveServer server;
 	
-	private static final String DEFAULT_HOST = "127.0.0.1";
-	private static final int DEFAULT_PORT = 7299;
-	
 	private static int INTERVALL_TIMER = 1;
 	
 	
