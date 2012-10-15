@@ -41,7 +41,7 @@ public class NodeMonitor {
 			
 			// Scale down
 			if(diskMinBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Sending disk minusage message. Used: " + diskUsed + " bytes");
+				LOG.debug("Sending disk minusage message. Used: " + diskUsed + " MB");
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MIN_DISK_USAGE, diskUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMinBreachTimer = 0;
@@ -54,7 +54,7 @@ public class NodeMonitor {
 			
 			//Scale up
 			if(diskMaxBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Sending disk maxusage message. Used: " + diskUsed + " bytes");
+				LOG.debug("Sending disk maxusage message. Used: " + diskUsed + " MB");
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MAX_DISK_USAGE, diskUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMaxBreachTimer = 0;

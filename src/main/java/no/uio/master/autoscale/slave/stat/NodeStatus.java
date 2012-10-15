@@ -27,6 +27,7 @@ public class NodeStatus {
 	private static Logger LOG = LoggerFactory.getLogger(NodeStatus.class);
 	private static Sigar sigar;
 
+	private static final Long BYTES_IN_MB = 1048576L;
 	
 	public NodeStatus() {
 		sigar = new Sigar();
@@ -85,7 +86,7 @@ public class NodeStatus {
 	}
 	
 	/**
-	 * Retrieve diskusage in size
+	 * Retrieve diskusage in size (Megabytes)
 	 * @return
 	 */
 	public Long getDiskSpaceUsed() {
@@ -93,7 +94,8 @@ public class NodeStatus {
 		
 		try {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
-			space = fsUsage.getUsed();
+			space = fsUsage.getUsed() / BYTES_IN_MB;
+			LOG.debug(fsUsage.getUsed() + " Bytes, " + space + " MB");
 		} catch (SigarException e) {
 			e.printStackTrace();
 		} 
