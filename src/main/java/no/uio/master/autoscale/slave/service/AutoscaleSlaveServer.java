@@ -72,7 +72,7 @@ public class AutoscaleSlaveServer implements Runnable {
 		Config.min_free_disk_space = (Long)msg.getMap().get("min_free_disk_space");
 		Config.max_free_disk_space = (Long)msg.getMap().get("max_free_disk_space");
 		Config.storage_location = (String)msg.getMap().get("storage_location");
-		Config.master_host = (String)msg.getSenderIp();
+		Config.master_host = (String)msg.getSenderHost();
 	}
 	
 	/**
