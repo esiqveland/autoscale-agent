@@ -5,9 +5,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import no.uio.master.autoscale.message.SlaveMessage;
+import no.uio.master.autoscale.net.Communicator;
 import no.uio.master.autoscale.slave.config.Config;
-import no.uio.master.autoscale.slave.message.SlaveMessage;
-import no.uio.master.autoscale.slave.net.Communicator;
 import no.uio.master.autoscale.slave.stat.NodeStatus;
 
 import org.slf4j.Logger;

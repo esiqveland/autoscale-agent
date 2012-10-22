@@ -1,9 +1,9 @@
 package no.uio.master.autoscale.slave.stat;
 
+import no.uio.master.autoscale.message.BreachMessage;
+import no.uio.master.autoscale.message.enumerator.BreachType;
+import no.uio.master.autoscale.net.Communicator;
 import no.uio.master.autoscale.slave.config.Config;
-import no.uio.master.autoscale.slave.message.BreachMessage;
-import no.uio.master.autoscale.slave.message.enumerator.BreachType;
-import no.uio.master.autoscale.slave.net.Communicator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
