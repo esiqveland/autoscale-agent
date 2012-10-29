@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  */
 public class AutoscaleSlaveDaemon implements Runnable {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlaveDaemon.class);
-	private static final Integer DEFAULT_SERVER_PORT = 7799;
 	private static NodeMonitor monitor = new NodeMonitor();
 	
 	public AutoscaleSlaveDaemon() {

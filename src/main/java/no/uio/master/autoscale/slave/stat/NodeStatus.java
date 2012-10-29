@@ -95,7 +95,6 @@ public class NodeStatus {
 		try {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			space = fsUsage.getUsed() / BYTES_IN_MB;
-			LOG.debug(fsUsage.getUsed() + " Bytes, " + space + " MB");
 		} catch (SigarException e) {
 			e.printStackTrace();
 		} 

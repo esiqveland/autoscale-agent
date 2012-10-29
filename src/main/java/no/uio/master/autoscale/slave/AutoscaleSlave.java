@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
+import no.uio.master.autoscale.slave.config.Config;
 import no.uio.master.autoscale.slave.service.AutoscaleSlaveServer;
 
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class AutoscaleSlave {
 	private static ScheduledExecutorService executor;
 	private static AutoscaleSlaveServer server;
 	
-	private static int INTERVALL_TIMER = 1;
+	private static int INTERVALL_TIMER = Config.intervall_timer;
 	
 	
 	public static void main(String[] args) {
