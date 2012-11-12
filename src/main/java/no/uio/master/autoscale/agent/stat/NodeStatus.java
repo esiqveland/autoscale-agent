@@ -1,8 +1,8 @@
-package no.uio.master.autoscale.slave.stat;
+package no.uio.master.autoscale.agent.stat;
 
 import javax.management.RuntimeErrorException;
 
-import no.uio.master.autoscale.slave.config.Config;
+import no.uio.master.autoscale.agent.config.Config;
 
 import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.CpuPerc;

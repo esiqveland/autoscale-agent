@@ -2,45 +2,48 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>no.uio.master.autoscale</groupId>
-  <artifactId>autoscale-slave</artifactId>
-  <name>Autoscale slave for autoscale-implementation</name>
+  <artifactId>autoscale-agent</artifactId>
+  <name>Autoscale agent for autoscale-implementation</name>
   <packaging>jar</packaging>
   <version>1.0.0</version>
 
 
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.5.11</version>
-      </dependency>
+      	<groupId>org.slf4j</groupId>
+      	<artifactId>slf4j-api</artifactId>
+    	<version>1.5.11</version>
+   	</dependency>
 	<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-    
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.6.2</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.10</version>
-      <scope>test</scope>
-      </dependency>
-    
+      	<groupId>junit</groupId>
+      	<artifactId>junit</artifactId>
+      	<version>4.10</version>
+      	<scope>test</scope>
+    </dependency>
     <dependency>
-      <groupId>org.fusesource</groupId>
-      <artifactId>sigar</artifactId>
-      <version>1.6.4</version>
-      </dependency>
+      	<groupId>org.fusesource</groupId>
+     	<artifactId>sigar</artifactId>
+      	<version>1.6.4</version>
+    </dependency>
+    <dependency>
+		<groupId>org.yaml</groupId>
+		<artifactId>snakeyaml</artifactId>
+		<version>1.10</version>
+	</dependency>
       
-      <!-- Autoscale dependency LOCAL -->
-		<dependency>
-			<groupId>no.uio.master.autoscale</groupId>
-			<artifactId>autoscale-common</artifactId>
-			<version>1.0.0</version>
-		</dependency>
+    <!-- Autoscale dependency LOCAL -->
+	<dependency>
+		<groupId>no.uio.master.autoscale</groupId>
+		<artifactId>autoscale-common</artifactId>
+		<version>1.0.0</version>
+	</dependency>
     
     </dependencies>
 

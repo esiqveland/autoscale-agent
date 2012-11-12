@@ -1,4 +1,4 @@
-package no.uio.master.autoscale.slave;
+package no.uio.master.autoscale.agent;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -6,8 +6,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 
-import no.uio.master.autoscale.slave.config.Config;
-import no.uio.master.autoscale.slave.service.AutoscaleSlaveServer;
+import no.uio.master.autoscale.agent.config.Config;
+import no.uio.master.autoscale.agent.service.AutoscaleAgentServer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class AutoscaleSlave {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlave.class);
 
 	private static ScheduledExecutorService executor;
-	private static AutoscaleSlaveServer server;
+	private static AutoscaleAgentServer server;
 	
 	private static int INTERVALL_TIMER = Config.intervall_timer;
 	
@@ -30,7 +30,7 @@ public class AutoscaleSlave {
 	public static void main(String[] args) {
 		LOG.debug("Autoscale slave invoked...");
 		try {
-			server = new AutoscaleSlaveServer();
+			server = new AutoscaleAgentServer();
 		} catch (IOException e) {
 			LOG.error("Failed to initialize slave server");
 		}

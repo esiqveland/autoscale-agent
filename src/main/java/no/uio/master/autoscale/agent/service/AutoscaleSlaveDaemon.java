@@ -1,8 +1,8 @@
-package no.uio.master.autoscale.slave.service;
+package no.uio.master.autoscale.agent.service;
 
 import java.net.ServerSocket;
 
-import no.uio.master.autoscale.slave.stat.NodeMonitor;
+import no.uio.master.autoscale.agent.stat.NodeMonitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
