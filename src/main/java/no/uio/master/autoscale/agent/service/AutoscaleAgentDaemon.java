@@ -1,7 +1,5 @@
 package no.uio.master.autoscale.agent.service;
 
-import java.net.ServerSocket;
-
 import no.uio.master.autoscale.agent.stat.NodeMonitor;
 
 import org.slf4j.Logger;
@@ -12,11 +10,11 @@ import org.slf4j.LoggerFactory;
  * @author andreas
  *
  */
-public class AutoscaleSlaveDaemon implements Runnable {
-	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlaveDaemon.class);
+public class AutoscaleAgentDaemon implements Runnable {
+	private static Logger LOG = LoggerFactory.getLogger(AutoscaleAgentDaemon.class);
 	private static NodeMonitor monitor = new NodeMonitor();
 	
-	public AutoscaleSlaveDaemon() {
+	public AutoscaleAgentDaemon() {
 		LOG.debug("Autoscale slave-daemon started");
 	}
 	

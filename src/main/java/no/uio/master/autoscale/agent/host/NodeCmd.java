@@ -1,6 +1,7 @@
 package no.uio.master.autoscale.agent.host;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface NodeCmd {
 	
@@ -15,4 +16,8 @@ public interface NodeCmd {
 	public void cleanDirectories() throws IOException;
 	
 	public Integer getProcessId();
+	
+	public List<String> getActiveNodes();
+	
+	public Long getUptime();
 }

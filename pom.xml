@@ -21,6 +21,17 @@
 		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>1.3.2</version>
+		<exclusions>
+		    <exclusion>
+		        <groupId>junit</groupId>
+		        <artifactId>junit</artifactId>
+		    </exclusion>
+		</exclusions>
+	</dependency>
     <dependency>
       	<groupId>junit</groupId>
       	<artifactId>junit</artifactId>
@@ -37,6 +48,21 @@
 		<artifactId>snakeyaml</artifactId>
 		<version>1.10</version>
 	</dependency>
+	<dependency>
+			<groupId>org.apache.cassandra</groupId>
+			<artifactId>cassandra-all</artifactId>
+			<version>1.1.5</version>
+			<exclusions>
+			    <exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-api</artifactId>
+			    </exclusion>
+			    <exclusion>
+			        <groupId>org.slf4j</groupId>
+			        <artifactId>slf4j-log4j12</artifactId>
+			    </exclusion>
+			</exclusions>
+		</dependency>
       
     <!-- Autoscale dependency LOCAL -->
 	<dependency>

@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Create the standalone solution for the autoscale-slave
+# Create the standalone solution for the autoscale-agent
 # implementation.
 #
-# Puts lib/*, bin/*, conf/*, target/autoscale-slave-1.0.0.jar
+# Puts lib/*, bin/*, conf/*, target/autoscale-agent-1.0.0.jar
 # into a single release tar.gz archive.
 VERSION=1.0.0
 FULLNAME=autoscale-slave-$VERSION

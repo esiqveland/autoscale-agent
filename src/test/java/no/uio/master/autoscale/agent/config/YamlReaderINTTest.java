@@ -19,7 +19,7 @@ public class YamlReaderINTTest {
 			Assert.fail(e.getMessage());
 		}
 		
-		Assert.assertEquals("/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5/bin/cassandra -f", Config.startup_command);
+		Assert.assertEquals("bin/cassandra", Config.startup_command);
 		Assert.assertEquals(3, Config.clean_directories.size());
 	}
 

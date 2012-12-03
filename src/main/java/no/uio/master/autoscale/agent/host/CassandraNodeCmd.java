@@ -9,37 +9,47 @@ import java.util.List;
 import no.uio.master.autoscale.agent.config.Config;
 
 import org.apache.cassandra.tools.NodeProbe;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 
 public class CassandraNodeCmd implements NodeCmd {
 	private static Logger LOG = LoggerFactory.getLogger(CassandraNodeCmd.class);
 
+	private String address;
+	private Integer port;
+	
 	private NodeProbe nodeProbe;
 	
-	public CassandraNodeCmd() {
+	public CassandraNodeCmd(String node_address, Integer node_port) {
+		this.address = node_address;
+		this.port = node_port;
 	}
 	
 	public boolean connect() {
-		try {
-			nodeProbe = new NodeProbe(Config.node_address, Config.node_port);
-			LOG.debug("Initialized nodeCmd for {}:{}",Config.node_address,Config.node_port);
-			return true;
-		} catch (Exception e) {
-			LOG.error("Failed to initialize Cassandra NodeCmd: " + Config.node_address +":"+Config.node_port);
-			return false;
+		boolean connected = true;
+		
+		if(null == nodeProbe) {
+			try {
+				nodeProbe = new NodeProbe(address, port);
+				LOG.debug("Initialized nodeCmd for {}:{}",address,port);
+				connected = true;
+			} catch (Exception e) {
+				LOG.error("Failed to initialize Cassandra NodeCmd: " + address +":"+port);
+				connected = false;
+			}
 		}
+		
+		return connected;
 	}
 
 	@Override
 	public void startupNode() throws IOException, InterruptedException {
-		LOG.debug("Startup node {}",Config.node_address);
+		LOG.debug("Startup node {}",address);
 		Config.runtime_process = Runtime.getRuntime().exec(Config.root + "/" + Config.startup_command);
-		//Sleep to stay synchronized with the Cassandra-startup
+		// Sleep to stay synchronized with the Cassandra-startup
 		Thread.sleep(30000 * 3);
-		LOG.debug("Startup complete");
+		LOG.debug("Startup completed");
 	}
 
 	@Override
@@ -54,7 +64,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			return;
 		}
 		
-		LOG.debug("Shutdown node {}", Config.node_address);
+		LOG.debug("Shutdown node {}", address);
 		if(null != Config.runtime_process) {
 			nodeProbe.decommission();
 
@@ -64,10 +74,7 @@ public class CassandraNodeCmd implements NodeCmd {
 				LOG.error("Failed to remove data ",e);
 			}
 			disconnect();
-			//TODO: Klarer ikke drepe prosessen.. den kjører fortsatt... skaper problemer når
-			// Instansen skal startes opp igjen (da er port i bruk)
 			Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
-			//Config.runtime_process.destroy();
 			
 			LOG.debug("Shutdown complete");
 		} else {
@@ -96,6 +103,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			}
 			
 			pid = Integer.valueOf(tempString.trim());
+			LOG.debug("Process ID: {}",pid);
 		} catch (Exception e) {
 			LOG.error("Failed to retrieve process id, process not found");
 		}
@@ -105,21 +113,21 @@ public class CassandraNodeCmd implements NodeCmd {
 
 	@Override
 	public void disconnect() {
-		try {
-			nodeProbe.close();
-		} catch (IOException e) {
-			LOG.error("Failed while closing connection to Node: " + Config.node_address);
+		if(null != nodeProbe) {
+			try {
+				nodeProbe.close();
+				nodeProbe = null;
+			} catch (IOException e) {
+				LOG.error("Failed while closing connection to Node: " + address);
+			}
 		}
 	}
 
 	@Override
 	public void cleanDirectories() throws IOException {
-		//TODO: Bruke Java.io.files istede!!!
 		for(String dir : Config.clean_directories) {
 			LOG.debug("Wipe data from: {}",dir);
-			String cmd = "rm -R " + dir + "/";
-			Process proc = Runtime.getRuntime().exec(cmd);
-			logErrorMessageIfAny(proc.getErrorStream());
+			FileUtils.deleteDirectory(new File(dir));
 			recreateDeletedFolder(dir);
 		}
 	}
@@ -127,32 +135,41 @@ public class CassandraNodeCmd implements NodeCmd {
 	private static void recreateDeletedFolder(String dirPath) throws IOException {
 		boolean dirCreated = new File(dirPath).mkdir();
 		if(dirCreated) {
-			LOG.debug("Created directory {} and chmod 755",dirPath);
+			LOG.debug("Created directory {}",dirPath);
 			Runtime.getRuntime().exec( "chmod 755 "+dirPath);
 		} else {
 			LOG.error("Failed while creating directory {}",dirPath);
 		}
 	}
-	/**
-	 * Logs error message if any
-	 * @param errorStream
-	 * @throws IOException
-	 */
-	private void logErrorMessageIfAny(InputStream errorStream) throws IOException {
-		StringBuilder str = new StringBuilder();
-		while(true) {
-			int c = errorStream.read();
-			if(c == -1) {
-				break;
-			}
-			str.append((char)c);
-			
+
+	@Override
+	public List<String> getActiveNodes() {
+		List<String> activeNodes = new ArrayList<String>();
+		if(!connect()) {
+			LOG.info("NodeProbe not running");
+			return activeNodes;
+		}
+
+		List<String> newActiveNodes = nodeProbe.getLiveNodes();
+		LOG.debug("Current active nodes: {}",newActiveNodes.size());
+		
+		activeNodes.addAll(newActiveNodes);
+		disconnect();
+		return activeNodes;
+	}
+
+	@Override
+	public Long getUptime() {
+		Long uptime = 0L;
+		if(!connect()) {
+			LOG.info("NodeProbe not running");
+			return uptime;
 		}
 		
-		String string = str.toString().trim();
-		if(!Strings.isNullOrEmpty(string)) {
-			LOG.error(string);
-		}
+		uptime = nodeProbe.getUptime();
+		LOG.debug("Current uptime: {}ms",uptime);
+
+		return uptime;
 	}
 
 }

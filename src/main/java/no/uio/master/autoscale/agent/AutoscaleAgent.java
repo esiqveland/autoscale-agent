@@ -13,13 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Initial startup of autocale-slave implementation.<br>
+ * Initial startup of autocale-agent implementation.<br>
  * This class is only used for initial setup of the daemon.
  * @author andreas
  *
  */
-public class AutoscaleSlave {
-	private static Logger LOG = LoggerFactory.getLogger(AutoscaleSlave.class);
+public class AutoscaleAgent {
+	private static Logger LOG = LoggerFactory.getLogger(AutoscaleAgent.class);
 
 	private static ScheduledExecutorService executor;
 	private static AutoscaleAgentServer server;
@@ -32,7 +32,7 @@ public class AutoscaleSlave {
 		try {
 			server = new AutoscaleAgentServer();
 		} catch (IOException e) {
-			LOG.error("Failed to initialize slave server");
+			LOG.error("Failed to initialize agent server");
 		}
 		executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleAtFixedRate(server, 0, INTERVALL_TIMER, TimeUnit.SECONDS);
