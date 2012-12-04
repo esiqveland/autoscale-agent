@@ -15,7 +15,7 @@ public class AutoscaleAgentDaemon implements Runnable {
 	private static NodeMonitor monitor = new NodeMonitor();
 	
 	public AutoscaleAgentDaemon() {
-		LOG.debug("Autoscale slave-daemon started");
+		LOG.debug("Autoscale agent-daemon started");
 	}
 	
 	@Override

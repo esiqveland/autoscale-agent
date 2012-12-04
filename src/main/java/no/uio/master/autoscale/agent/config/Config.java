@@ -19,7 +19,7 @@ public class Config {
 	public static Integer slave_output_port = 7798;
 	
 	/* Local configurations - Not modified by master */
-	public static String configuration_file = "conf/autoscale-agent.yaml";
+	public static String configuration_file = "/Users/andreas/UiO/gitrepos/autoscale-agent/conf/autoscale-agent.yaml";
 
 	public static String root = "/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5";
 	public static String startup_command = "bin/cassandra";

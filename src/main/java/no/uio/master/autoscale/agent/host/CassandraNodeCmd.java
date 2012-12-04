@@ -22,6 +22,7 @@ public class CassandraNodeCmd implements NodeCmd {
 	private NodeProbe nodeProbe;
 	
 	public CassandraNodeCmd(String node_address, Integer node_port) {
+		LOG.debug("Initialize NodeCommand for {}:{}",node_address,node_port);
 		this.address = node_address;
 		this.port = node_port;
 	}
@@ -31,8 +32,9 @@ public class CassandraNodeCmd implements NodeCmd {
 		
 		if(null == nodeProbe) {
 			try {
-				nodeProbe = new NodeProbe(address, port);
-				LOG.debug("Initialized nodeCmd for {}:{}",address,port);
+				LOG.debug("Connecting to NodeProbe {}:{}",address,port);
+				nodeProbe = new NodeProbe(address, port); 
+				LOG.debug("Connected to NodeProbe");
 				connected = true;
 			} catch (Exception e) {
 				LOG.error("Failed to initialize Cassandra NodeCmd: " + address +":"+port);
@@ -101,8 +103,9 @@ public class CassandraNodeCmd implements NodeCmd {
 				char ch = (char)n;
 				tempString += ch;
 			}
-			
-			pid = Integer.valueOf(tempString.trim());
+			// If returned more than one, return last PID
+			String[] splitString = tempString.split("\\r?\\n");
+			pid = Integer.valueOf(splitString[splitString.length-1].trim());
 			LOG.debug("Process ID: {}",pid);
 		} catch (Exception e) {
 			LOG.error("Failed to retrieve process id, process not found");
@@ -144,6 +147,7 @@ public class CassandraNodeCmd implements NodeCmd {
 
 	@Override
 	public List<String> getActiveNodes() {
+		LOG.debug("Get active nodes");
 		List<String> activeNodes = new ArrayList<String>();
 		if(!connect()) {
 			LOG.info("NodeProbe not running");

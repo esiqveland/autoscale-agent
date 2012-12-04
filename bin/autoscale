@@ -38,6 +38,12 @@ for file in $AS_HOME/lib/*; do
 	CLASSPATH=$CLASSPATH:$file
 done
 
+## Append all inner lib-files
+for file in $AS_HOME/lib/lib/*; do
+	CLASSPATH=$CLASSPATH:$file
+done
+
+echo $CLASSPATH
 
 classname="no.uio.master.autoscale.agent.AutoscaleAgent"
 

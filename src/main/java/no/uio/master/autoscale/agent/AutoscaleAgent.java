@@ -28,7 +28,7 @@ public class AutoscaleAgent {
 	
 	
 	public static void main(String[] args) {
-		LOG.debug("Autoscale slave invoked...");
+		LOG.debug("Autoscale agent invoked...");
 		try {
 			server = new AutoscaleAgentServer();
 		} catch (IOException e) {

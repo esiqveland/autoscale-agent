@@ -20,14 +20,6 @@ public class AutoscaleAgentServerINTTest {
 	public static void setUpBeforeClass() throws Exception {
 		agentServer = new AutoscaleAgentServer();
 
-		Config.startup_command = "/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5/bin/cassandra";
-		Config.node_address = "127.0.0.2";
-		Config.node_port = 8002;
-		
-		Config.clean_directories = new ArrayList<String>();
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/data");
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/commitlog");
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/saved_caches");
 	}
 
 	@AfterClass
