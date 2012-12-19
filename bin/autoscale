@@ -25,7 +25,6 @@ fi
 VERSION=1.0.0
 SIGAR_VERSION=1.6.4
 
-CLASSPATH=$AS_HOME/target/autoscale-agent-$VERSION.jar
 
 
 
