@@ -43,6 +43,8 @@ for file in $AS_HOME/lib/sigar-$SIGAR_VERSION/*; do
 	CLASSPATH=$CLASSPATH:$file
 done
 
+CLASSPATH=$CLASSPATH:$AS_HOME/src/main/resources/autoscale-agent.yaml
+
 
 classname="no.uio.master.autoscale.agent.AutoscaleAgent"
 
