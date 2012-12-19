@@ -36,7 +36,7 @@ public class AutoscaleAgent {
 		}
 		executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleAtFixedRate(server, 0, INTERVALL_TIMER, TimeUnit.SECONDS);
-		LOG.info("Invoked");
+		LOG.debug("Invoked");
 	}
 	
 }

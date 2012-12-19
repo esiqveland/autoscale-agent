@@ -47,7 +47,7 @@ public class CassandraNodeCmd implements NodeCmd {
 
 	@Override
 	public void startupNode() throws IOException, InterruptedException {
-		LOG.debug("Startup node {}",address);
+		LOG.info("Startup node {}",address);
 		Config.runtime_process = Runtime.getRuntime().exec(Config.root + "/" + Config.startup_command);
 		// Sleep to stay synchronized with the Cassandra-startup
 		Thread.sleep(30000 * 3);
@@ -57,16 +57,16 @@ public class CassandraNodeCmd implements NodeCmd {
 	@Override
 	public void shutdownNode(Integer pid) throws InterruptedException, IOException {
 		if(!connect()) {
-			LOG.info("NodeProbe not running");
+			LOG.debug("NodeProbe not running");
 			return;
 		}
 		
 		if(null == pid) {
-			LOG.info("Cannot shutdown node. Process-id is missing");
+			LOG.debug("Cannot shutdown node. Process-id is missing");
 			return;
 		}
 		
-		LOG.debug("Shutdown node {}", address);
+		LOG.info("Shutdown node {}", address);
 		if(null != Config.runtime_process) {
 			nodeProbe.decommission();
 
@@ -78,7 +78,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			disconnect();
 			Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
 			
-			LOG.debug("Shutdown complete");
+			LOG.info("Shutdown complete");
 		} else {
 			LOG.error("Lost process reference");
 		}
@@ -150,12 +150,12 @@ public class CassandraNodeCmd implements NodeCmd {
 		LOG.debug("Get active nodes");
 		List<String> activeNodes = new ArrayList<String>();
 		if(!connect()) {
-			LOG.info("NodeProbe not running");
+			LOG.debug("NodeProbe not running");
 			return activeNodes;
 		}
 
 		List<String> newActiveNodes = nodeProbe.getLiveNodes();
-		LOG.debug("Current active nodes: {}",newActiveNodes.size());
+		LOG.info("Current active nodes: {}",newActiveNodes.size());
 		
 		activeNodes.addAll(newActiveNodes);
 		disconnect();
@@ -166,12 +166,12 @@ public class CassandraNodeCmd implements NodeCmd {
 	public Long getUptime() {
 		Long uptime = 0L;
 		if(!connect()) {
-			LOG.info("NodeProbe not running");
+			LOG.debug("NodeProbe not running");
 			return uptime;
 		}
 		
 		uptime = nodeProbe.getUptime();
-		LOG.debug("Current uptime: {}ms",uptime);
+		LOG.info("Current uptime: {}ms",uptime);
 
 		return uptime;
 	}

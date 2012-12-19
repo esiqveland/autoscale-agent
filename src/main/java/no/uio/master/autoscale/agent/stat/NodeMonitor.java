@@ -41,7 +41,7 @@ public class NodeMonitor {
 			
 			// Scale down
 			if(diskMinBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Sending disk min-usage message. Used: " + diskUsed + " MB");
+				LOG.info("Sending message - Minimum disk usage: {}MB",diskUsed);
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MIN_DISK_USAGE, diskUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMinBreachTimer = 0;
@@ -54,7 +54,7 @@ public class NodeMonitor {
 			
 			//Scale up
 			if(diskMaxBreachTimer > Config.threshold_breach_limit) {
-				LOG.debug("Sending disk maxusage message. Used: " + diskUsed + " MB");
+				LOG.info("Sending message - Maximum disk usage: {}MB",diskUsed);
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MAX_DISK_USAGE, diskUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				diskMaxBreachTimer = 0;
@@ -78,8 +78,7 @@ public class NodeMonitor {
 			memMinBreachTimer += Config.intervall_timer;
 			
 			if(memMinBreachTimer > Config.threshold_breach_limit) {
-				// Scale down!
-				LOG.debug("Sending memory minusage message. Used: "+ memUsed + "%");
+				LOG.info("Sending message - Minimum memory usage: {}%",memUsed);
 				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MIN_MEMORY_USAGE, memUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				memMinBreachTimer = 0;
@@ -92,8 +91,7 @@ public class NodeMonitor {
 			memMaxBreachTimer += Config.intervall_timer;
 			
 			if(memMaxBreachTimer > Config.threshold_breach_limit) {
-				// Scale up!
-				LOG.debug("Sending memory maxusage message. Used: " + memUsed + "%");
+				LOG.info("Sending message - Maximum memory usage: {}%",memUsed);
 				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MAX_MEMORY_USAGE, memUsed);
 				communicator.sendMessage(Config.master_host, breachMessage);
 				memMinBreachTimer = 0;

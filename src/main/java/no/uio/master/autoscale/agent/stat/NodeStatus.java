@@ -35,10 +35,10 @@ public class NodeStatus {
 			mem = sigar.getMem();
 			memUsed = mem.getUsedPercent();
 		} catch (Exception e) {
-			LOG.error("Failed to get memory usage",e);
-			e.printStackTrace();
+			LOG.error("Failed to get memory usage");
 		}
 		
+		LOG.info("Memory usage: {}%",memUsed);
 		return memUsed;
 	}
 	
@@ -50,13 +50,12 @@ public class NodeStatus {
 		Double cpuUsed = 0.0;
 		
 		try {
-			CpuPerc[] cpuPercList = sigar.getCpuPercList();
-			for (CpuPerc cpuPerc : cpuPercList) {
-				cpuUsed += cpuPerc.getCombined(); //TODO: Gir fra 0.3 > 1.6 ved bygging av cassandra.. feil?
-			}
+			cpuUsed = sigar.getCpuPerc().getCombined();
 		} catch (SigarException e) {
-			e.printStackTrace();
+			LOG.error("Failed to retrieve CPU-usage");
 		}
+		
+		LOG.info("CPU usage: {}%",cpuUsed);
 		return cpuUsed;
 	}
 
@@ -71,9 +70,10 @@ public class NodeStatus {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			diskUsed = fsUsage.getUsePercent();
 		} catch (SigarException e) {
-			e.printStackTrace();
+			LOG.error("Failed to retrieve disk usage");
 		} 
 		
+		LOG.info("Disk usage: {}%",diskUsed);
 		return diskUsed;
 	}
 	
@@ -88,9 +88,10 @@ public class NodeStatus {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			space = fsUsage.getUsed() / BYTES_IN_MB;
 		} catch (SigarException e) {
-			e.printStackTrace();
+			LOG.error("Failed to retrieve disk space used in megabytes");
 		} 
 		
+		LOG.info("Disk usage: {}MB",space);
 		return space;
 	}
 }

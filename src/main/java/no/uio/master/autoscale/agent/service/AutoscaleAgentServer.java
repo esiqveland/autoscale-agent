@@ -46,7 +46,9 @@ public class AutoscaleAgentServer implements Runnable {
 	public void run() {
 		AgentMessage msg = (AgentMessage) communicator.readMessage();
 		try {
-			performAction(msg);
+			if(null != msg) {
+				performAction(msg);
+			}
 		} catch (Exception e) {
 			LOG.error("Failed while performing action ", e);
 		}
