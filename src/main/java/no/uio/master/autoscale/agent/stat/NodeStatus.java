@@ -38,7 +38,6 @@ public class NodeStatus {
 			LOG.error("Failed to get memory usage");
 		}
 		
-		LOG.info("Memory usage: {}%",memUsed);
 		return memUsed;
 	}
 	
@@ -55,7 +54,6 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve CPU-usage");
 		}
 		
-		LOG.info("CPU usage: {}%",cpuUsed);
 		return cpuUsed;
 	}
 
@@ -73,7 +71,6 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve disk usage");
 		} 
 		
-		LOG.info("Disk usage: {}%",diskUsed);
 		return diskUsed;
 	}
 	
@@ -91,7 +88,6 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve disk space used in megabytes");
 		} 
 		
-		LOG.info("Disk usage: {}MB",space);
 		return space;
 	}
 }
