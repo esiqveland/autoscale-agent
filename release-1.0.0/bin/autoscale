@@ -1,0 +1,59 @@
+#####################################################
+##												   ##
+##		  Autoscale agent implementation		   ##
+##												   ##
+#####################################################
+##
+## Loads all files located in lib-folder into 
+## classpath. If using mac, or having problems 
+## initialising autoscale-agent with error message 
+## for Sigar API, download the Sigar API-code from:
+## http://sourceforge.net/projects/sigar/files/.
+##
+## Unzip hyperic-sigar-x.x.x.zip, and goto:
+## sigar-bin/lib - Put the files corresponding to 
+## your operating system within the autoscale-agent/
+## lib folder.
+##
+####################################################
+## Set home-directory of Autoscale-agent if not set
+if [ "x$AS_HOME" = "x" ]; then
+    AS_HOME=$(cd $(dirname "$0"); pwd)/..
+fi
+
+## Set version-number
+VERSION=1.0.0
+SIGAR_VERSION=1.6.4
+
+
+
+
+## Java-location if not set
+JAVA=/usr/bin/java
+
+
+
+## Append all files located within lib-folder
+for file in $AS_HOME/lib/*; do
+	CLASSPATH=$CLASSPATH:$file
+done
+
+## Append all sigar-api files
+for file in $AS_HOME/lib/sigar-$SIGAR_VERSION/*; do
+	CLASSPATH=$CLASSPATH:$file
+done
+
+## Append agent-jar
+CLASSPATH=$CLASSPATH:$AS_HOME/target/autoscale-agent-$VERSION.jar
+
+
+CLASSPATH=$CLASSPATH:$AS_HOME/src/main/resources/autoscale-agent.yaml
+
+
+classname="no.uio.master.autoscale.agent.AutoscaleAgent"
+
+## Set log4j path
+params="-Dlog4j.configuration=file:///$AS_HOME/conf/log4j.properties"
+
+## Execute
+exec "$JAVA" "$params" -cp "$CLASSPATH" "$classname"

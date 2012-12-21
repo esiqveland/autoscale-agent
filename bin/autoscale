@@ -43,10 +43,17 @@ for file in $AS_HOME/lib/sigar-$SIGAR_VERSION/*; do
 	CLASSPATH=$CLASSPATH:$file
 done
 
+## Append agent-jar
+CLASSPATH=$CLASSPATH:$AS_HOME/target/autoscale-agent-$VERSION.jar
+
+
 CLASSPATH=$CLASSPATH:$AS_HOME/src/main/resources/autoscale-agent.yaml
 
 
 classname="no.uio.master.autoscale.agent.AutoscaleAgent"
 
+## Set log4j path
+params="-Dlog4j.configuration=file:///$AS_HOME/conf/log4j.properties"
+
 ## Execute
-exec "$JAVA" -cp "$CLASSPATH" "$classname"
+exec "$JAVA" "$params" -cp "$CLASSPATH" "$classname"
