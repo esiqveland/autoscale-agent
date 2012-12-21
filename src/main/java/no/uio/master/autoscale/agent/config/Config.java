@@ -29,6 +29,7 @@ public class Config {
 	
 	public static Process runtime_process = null;
 	
+	/* Current node- address and port */
 	public static String node_address = "127.0.0.1";
 	public static Integer node_port = 8001;
 }
