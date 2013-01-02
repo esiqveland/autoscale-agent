@@ -126,7 +126,7 @@ public class AutoscaleAgentServer implements Runnable {
 	 * @param msg
 	 */
 	private void updateConfig(AgentMessage msg) {
-		LOG.info("Update configurations");
+		LOG.debug("Update configurations");
 
 		if (msg.getMap().containsKey("intervall_timer")) {
 			Config.intervall_timer = (Integer) msg.getMap().get("intervall_timer");
