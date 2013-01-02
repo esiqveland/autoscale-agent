@@ -41,6 +41,10 @@ public class YamlReader {
 		for (Iterator<Entry<String, String>> iterator = clr_dirs.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, String> entry = iterator.next();
 			 Config.clean_directories.add(entry.getValue());
+			 
+			 if(entry.getKey().equals("data")) {
+				 Config.storage_location = (String)data.get("data");
+			 }
 		}
 		
 		Config.node_address = (String)data.get("node_address");
