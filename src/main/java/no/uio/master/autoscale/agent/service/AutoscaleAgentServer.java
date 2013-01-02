@@ -16,11 +16,10 @@ import no.uio.master.autoscale.message.AgentMessage;
 import no.uio.master.autoscale.message.enumerator.AgentMessageType;
 import no.uio.master.autoscale.message.enumerator.AgentStatus;
 import no.uio.master.autoscale.net.Communicator;
+import no.uio.master.autoscale.util.CommunicatorObjectBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 
 public class AutoscaleAgentServer implements Runnable {
 	private static Logger LOG = LoggerFactory.getLogger(AutoscaleAgentServer.class);
@@ -45,10 +44,13 @@ public class AutoscaleAgentServer implements Runnable {
 
 	@Override
 	public void run() {
-		AgentMessage msg = (AgentMessage) communicator.readMessage();
-		LOG.info("Message read: {}",msg);
+		CommunicatorObjectBundle obj = (CommunicatorObjectBundle) communicator.readMessage();
 		try {
-			if(null != msg) {
+			if(null != obj) {
+				AgentMessage msg = (AgentMessage) obj.getMessage();
+				msg.setSenderHost(obj.getSenderIp());
+				
+				LOG.info("Message read: {}",msg);
 				performAction(msg);
 			}
 		} catch (Exception e) {
