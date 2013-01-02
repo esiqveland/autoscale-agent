@@ -40,11 +40,13 @@ public class AutoscaleAgentServer implements Runnable {
 		
 		nodeCmd = new CassandraNodeCmd(Config.node_address, Config.node_port);
 		communicator = new Communicator(Config.slave_input_port, Config.slave_output_port);
+		LOG.info("Listen-server started");
 	}
 
 	@Override
 	public void run() {
 		AgentMessage msg = (AgentMessage) communicator.readMessage();
+		LOG.info("Message read: {}",msg);
 		try {
 			if(null != msg) {
 				performAction(msg);
@@ -77,8 +79,8 @@ public class AutoscaleAgentServer implements Runnable {
 			break;
 
 		case START_AGENT:
-			initAgent();
 			updateConfig(msg);
+			initAgent();
 			break;
 
 		case SHUTDOWN_NODE:
