@@ -35,7 +35,7 @@ public class NodeStatus {
 			mem = sigar.getMem();
 			memUsed = mem.getUsedPercent();
 		} catch (Exception e) {
-			LOG.error("Failed to get memory usage");
+			LOG.error("Failed to get memory usage ",e);
 		}
 		
 		return memUsed;
@@ -51,7 +51,7 @@ public class NodeStatus {
 		try {
 			cpuUsed = sigar.getCpuPerc().getCombined();
 		} catch (SigarException e) {
-			LOG.error("Failed to retrieve CPU-usage");
+			LOG.error("Failed to retrieve CPU-usage ",e);
 		}
 		
 		return cpuUsed;
@@ -68,7 +68,7 @@ public class NodeStatus {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			diskUsed = fsUsage.getUsePercent();
 		} catch (SigarException e) {
-			LOG.error("Failed to retrieve disk usage");
+			LOG.error("Failed to retrieve disk usage ",e);
 		} 
 		
 		return diskUsed;

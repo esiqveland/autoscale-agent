@@ -149,10 +149,6 @@ public class AutoscaleAgentServer implements Runnable {
 			Config.max_free_disk_space = (Long) msg.getMap().get("max_free_disk_space");
 		}
 
-		if (msg.getMap().containsKey("storage_location")) {
-			Config.storage_location = (String) msg.getMap().get("storage_location");
-		}
-
 		Config.master_host = (String) msg.getSenderHost();
 	}
 
