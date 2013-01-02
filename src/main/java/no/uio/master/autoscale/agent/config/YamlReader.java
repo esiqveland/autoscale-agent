@@ -43,7 +43,7 @@ public class YamlReader {
 			 Config.clean_directories.add(entry.getValue());
 			 
 			 if(entry.getKey().equals("data")) {
-				 Config.storage_location = (String)data.get("data");
+				 Config.storage_location = entry.getValue();
 			 }
 		}
 		
