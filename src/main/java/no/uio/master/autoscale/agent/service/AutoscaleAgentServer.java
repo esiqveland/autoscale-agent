@@ -78,6 +78,7 @@ public class AutoscaleAgentServer implements Runnable {
 
 		case START_AGENT:
 			initAgent();
+			updateConfig(msg);
 			break;
 
 		case SHUTDOWN_NODE:
@@ -123,7 +124,7 @@ public class AutoscaleAgentServer implements Runnable {
 	 * @param msg
 	 */
 	private void updateConfig(AgentMessage msg) {
-		LOG.debug("Update configurations");
+		LOG.info("Update configurations");
 
 		if (msg.getMap().containsKey("intervall_timer")) {
 			Config.intervall_timer = (Integer) msg.getMap().get("intervall_timer");
@@ -157,7 +158,7 @@ public class AutoscaleAgentServer implements Runnable {
 	 * Initialize / Re-initialize daemon
 	 */
 	private void initAgent() {
-		LOG.debug("Initialize agent");
+		LOG.info("Initialize agent");
 		if (null != daemon) {
 			executor.shutdownNow();
 		}
@@ -170,7 +171,7 @@ public class AutoscaleAgentServer implements Runnable {
 	 * Shutdown currently running daemon (NOT the server)
 	 */
 	private void stopAgent() {
-		LOG.debug("Stop agent");
+		LOG.info("Stop agent");
 		executor.shutdown();
 	}
 }
