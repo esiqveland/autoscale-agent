@@ -85,7 +85,7 @@ public class NodeStatus {
 			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
 			space = fsUsage.getUsed() / BYTES_IN_MB;
 		} catch (SigarException e) {
-			LOG.error("Failed to retrieve disk space used in megabytes");
+			LOG.error("Failed to retrieve disk space used in megabytes ",e);
 		} 
 		
 		return space;

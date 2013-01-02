@@ -153,9 +153,7 @@ public class AutoscaleAgentServer implements Runnable {
 			Config.storage_location = (String) msg.getMap().get("storage_location");
 		}
 
-		if (!Strings.isNullOrEmpty(msg.getSenderHost())) {
-			Config.master_host = (String) msg.getSenderHost();
-		}
+		Config.master_host = (String) msg.getSenderHost();
 	}
 
 	/**
