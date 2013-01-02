@@ -150,6 +150,7 @@ public class AutoscaleAgentServer implements Runnable {
 		}
 
 		Config.master_host = (String) msg.getSenderHost();
+		LOG.info("Connected with master host: {}", (String)msg.getSenderHost());
 	}
 
 	/**

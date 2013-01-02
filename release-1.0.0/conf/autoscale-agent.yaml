@@ -19,4 +19,4 @@ clear_directories:
 #
 # Node command connection (JMX) - "Always" locally
 node_address: 127.0.0.1
-node_port: 8001
+node_port: 7199

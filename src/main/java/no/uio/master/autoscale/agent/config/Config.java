@@ -12,7 +12,7 @@ public class Config {
 	public static Long min_free_disk_space = 60L;
 	public static Long max_free_disk_space = 20000L;
 	public static String storage_location = "/";
-	public static String master_host = "127.0.0.1";
+	public static volatile String master_host = "127.0.0.1";
 	
 	/* Communication-ports */
 	public static Integer slave_input_port = 7799;
