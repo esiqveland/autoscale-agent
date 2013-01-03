@@ -1,58 +1,38 @@
-autoscale-slave
+Autoscale agent
 ===============
+Agent which runs together with the node-implementation. It is currently made for Cassandra, 
+but it should only be necessary to change the configuration files and replace Cassandra-specific 
+implementations for your needs, as interfaces are provided for this functionality.
 
-Slaves, which runs together with the (Cassandra) implementation.
+The agent may be initialized on already running clusters, since it does not interfer directly 
+into the cluster itselves. The agent runs alongside the implementation, monitoring CPU, disk 
+and memory-usage, and depending on thresholds sent from master, sends breach messages back 
+whenever breaches occurs over a certain timespan. 
 
+The master will then collect messages over time, and decide if a node should be taken down, or 
+if there is necessary to add another node.
 
-This slave should be initiated when cassandra-starts, and runs as a 
-background-service at a custom port. When 'autoscale' is initiated, it 
-tries to contact 'autoscale-slave', on each node, which should be running 
-on its own port.
-
-When the 'autoscale-slave' received contact from autoscaler, it is initiated 
-with the parameters provided; autoscale-master ip & port, threshold-parameters 
-set for master-initialization.
-
-The autoscale-slave will use the 'SigarAPI' to retrieve Disk, Memory and CPU-usage 
-of the machine its running on (therefore, it is required to be running on each 
-node).
-
-When the autoscale-slave encounters a threshold-breach, it sends an event to the 
-autoscale-master:
-
-BreachMessage {
-	String nodeIP;
-	BreachType type;  
-}
+The agent uses 'Sigar API' to retrieve Disk, Memory and CPU-usage from the current system.
 
 
-The breachType is an enum constisting of different types of recorded breaches:
+Install instructions
+=====================
+1. Make sure ports are open, and accessible from the internet. Default ports are '7799' and '7798'
 
-enum BreachType {
-	MIN_MEMORY_USE,
-	MAX_MEMORY_USE,
-	MIN_CPU_USE,
-	MAX_CPU_USE,
-	MIN_DISK_USE,
-	MAX_DISK_USE
-}
+2. Download release-N.N.N.tar.gz
 
-The master recieved the breachMessage, and sort the breachTypes for scaling down or up:
-BreachType type;
+3. Unpack and configurate 'conf/autoscale-agent.yaml' and 'log4j.properties' for your needs
 
-switch(type) {
-	case MIN_MEMORY_USE:
-	case MIN_CPU_USE:
-	case MIN_DISK_USE:
-		scaleDown();
-		break;
-	case MAX_MEMORY_USE:
-	case MAX_CPU_USE:
-	case MAX_DISK_USE:
-		scaleUp();
-		break;
-	default:
-		break;
-} 
+4. Start agent by: 'bin/autoscale'
 
 
+Where to find master implementation
+===================================
+Go to https://github.com/baakind/autoscale to download master implementation, which is responsible 
+for communicating with each agent running, and control the scaling of the cluster.
+
+
+Footnote
+========
+This is only an early release for an autoscaler-implementation as a part of the master thesis for
+Andreas Baakind at University of Oslo.
