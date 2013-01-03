@@ -48,7 +48,7 @@ public class CassandraNodeCmd implements NodeCmd {
 	@Override
 	public void startupNode() throws IOException, InterruptedException {
 		LOG.info("Startup node {}",address);
-		Config.runtime_process = Runtime.getRuntime().exec(Config.root + "/" + Config.startup_command);
+		Runtime.getRuntime().exec(Config.root + "/" + Config.startup_command);
 		// Sleep to stay synchronized with the Cassandra-startup
 		Thread.sleep(30000 * 3);
 		LOG.debug("Startup completed");
@@ -56,6 +56,7 @@ public class CassandraNodeCmd implements NodeCmd {
 
 	@Override
 	public void shutdownNode(Integer pid) throws InterruptedException, IOException {
+		LOG.debug("Shutdown process {}",pid);
 		if(!connect()) {
 			LOG.debug("NodeProbe not running");
 			return;
@@ -66,22 +67,18 @@ public class CassandraNodeCmd implements NodeCmd {
 			return;
 		}
 		
-		LOG.info("Shutdown node {}", address);
-		if(null != Config.runtime_process) {
-			nodeProbe.decommission();
+		LOG.info("Shutdown node");
+		nodeProbe.decommission();
 
-			try {
-				cleanDirectories();
-			} catch (IOException e) {
-				LOG.error("Failed to remove data ",e);
-			}
-			disconnect();
-			Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
-			
-			LOG.info("Shutdown complete");
-		} else {
-			LOG.error("Lost process reference");
+		try {
+			cleanDirectories();
+		} catch (IOException e) {
+			LOG.error("Failed to remove data ",e);
 		}
+		disconnect();
+		Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
+		
+		LOG.info("Shutdown complete");
 	}
 	
 	@Override

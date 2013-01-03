@@ -47,11 +47,15 @@ public class AutoscaleAgentServer implements Runnable {
 		CommunicatorObjectBundle obj = (CommunicatorObjectBundle) communicator.readMessage();
 		try {
 			if(null != obj) {
-				AgentMessage msg = (AgentMessage) obj.getMessage();
-				msg.setSenderHost(obj.getSenderIp());
-				
-				LOG.info("Message read: {}",msg);
-				performAction(msg);
+				if(obj.getMessage() instanceof AgentMessage) {
+					AgentMessage msg = (AgentMessage) obj.getMessage();
+					msg.setSenderHost(obj.getSenderIp());
+					
+					LOG.info("Message read: {}",msg);
+					performAction(msg);
+				} else {
+					LOG.error("Message not an AgentMessage - ", obj.getMessage().getClass().toString());
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Failed while performing action ", e);
