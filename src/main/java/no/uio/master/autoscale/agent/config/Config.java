@@ -21,7 +21,7 @@ public class Config {
 	/* Local configurations - Not modified by master */
 	public static String configuration_file = "./conf/autoscale-agent.yaml";
 
-	public static String root = "path-to-root/apache-cassandra-1.1.5";
+	public static String root = "path-to-root/apache-cassandra-1.1.7";
 	public static String startup_command = "bin/cassandra";
 	public static String shutdown_command = "kill %d";
 	

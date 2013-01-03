@@ -90,7 +90,7 @@ public class CassandraNodeCmd implements NodeCmd {
 		String[] args = new String[3];
 		args[0] = "pgrep";
 		args[1] = "-f";
-		args[2] = Config.root;
+		args[2] = "cassandra";//Config.root;
 		
 		try {
 			Process p = Runtime.getRuntime().exec(args);
