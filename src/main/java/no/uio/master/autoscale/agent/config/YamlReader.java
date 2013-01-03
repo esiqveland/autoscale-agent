@@ -47,7 +47,12 @@ public class YamlReader {
 			 }
 		}
 		
+		/* Configure JMX communication */
 		Config.node_address = (String)data.get("node_address");
 		Config.node_port = (Integer)data.get("node_port");
+		
+		/* Input- and output port for communication with master */
+		Config.slave_input_port = (Integer)data.get("input_port");
+		Config.slave_output_port = (Integer)data.get("output_port");
 	}
 }
