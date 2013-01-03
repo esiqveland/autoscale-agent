@@ -1,7 +1,9 @@
 package no.uio.master.autoscale.agent.stat;
 
 import no.uio.master.autoscale.agent.config.Config;
+import no.uio.master.autoscale.message.AgentMessage;
 import no.uio.master.autoscale.message.BreachMessage;
+import no.uio.master.autoscale.message.enumerator.AgentMessageType;
 import no.uio.master.autoscale.message.enumerator.BreachType;
 import no.uio.master.autoscale.net.Communicator;
 
@@ -43,7 +45,10 @@ public class NodeMonitor {
 			if(diskMinBreachTimer > Config.threshold_breach_limit) {
 				LOG.info("Sending message - Minimum disk usage: {}MB",diskUsed);
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MIN_DISK_USAGE, diskUsed);
-				communicator.sendMessage(Config.master_host, breachMessage);
+				AgentMessage agentMessage = new AgentMessage(AgentMessageType.BREACH_MESSAGE);
+				agentMessage.put("breach", breachMessage);
+				
+				communicator.sendMessage(Config.master_host, agentMessage);
 				diskMinBreachTimer = 0;
 			}
 		}
@@ -56,7 +61,10 @@ public class NodeMonitor {
 			if(diskMaxBreachTimer > Config.threshold_breach_limit) {
 				LOG.info("Sending message - Maximum disk usage: {}MB",diskUsed);
 				BreachMessage<Long> breachMessage = new BreachMessage<Long>(BreachType.MAX_DISK_USAGE, diskUsed);
-				communicator.sendMessage(Config.master_host, breachMessage);
+				AgentMessage agentMessage = new AgentMessage(AgentMessageType.BREACH_MESSAGE);
+				agentMessage.put("breach", breachMessage);
+				
+				communicator.sendMessage(Config.master_host, agentMessage);
 				diskMaxBreachTimer = 0;
 			}
 		}
@@ -80,7 +88,10 @@ public class NodeMonitor {
 			if(memMinBreachTimer > Config.threshold_breach_limit) {
 				LOG.info("Sending message - Minimum memory usage: {}%",memUsed);
 				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MIN_MEMORY_USAGE, memUsed);
-				communicator.sendMessage(Config.master_host, breachMessage);
+				AgentMessage agentMessage = new AgentMessage(AgentMessageType.BREACH_MESSAGE);
+				agentMessage.put("breach", breachMessage);
+				
+				communicator.sendMessage(Config.master_host, agentMessage);
 				memMinBreachTimer = 0;
 			}
 		} 
@@ -93,7 +104,10 @@ public class NodeMonitor {
 			if(memMaxBreachTimer > Config.threshold_breach_limit) {
 				LOG.info("Sending message - Maximum memory usage: {}%",memUsed);
 				BreachMessage<Double> breachMessage = new BreachMessage<Double>(BreachType.MAX_MEMORY_USAGE, memUsed);
-				communicator.sendMessage(Config.master_host, breachMessage);
+				AgentMessage agentMessage = new AgentMessage(AgentMessageType.BREACH_MESSAGE);
+				agentMessage.put("breach", breachMessage);
+				
+				communicator.sendMessage(Config.master_host, agentMessage);
 				memMinBreachTimer = 0;
 			}
 		}
