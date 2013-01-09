@@ -26,3 +26,26 @@ node_port: 7199
 # Incoming and outgoing ports for communication
 input_port: 7799
 output_port: 7798
+
+#
+# Default thresholds and timers.
+# Values will be overwritten if received from master 
+# through an update or startup-message
+
+# How often should the agent run (seconds)
+intervall_timer: 1
+
+# Breach limit (seconds)
+threshold_breach_limit: 10
+
+# Minimum allowed memory usage before breach (%)
+min_memory_usage: 10.0
+
+# Maximum allowed memory usage before breach (%)
+max_memory_usage: 90.0
+
+# Minimum available disk space before breach (MB)
+min_free_disk_space: 100
+
+# Maximum available disk space before breach (MB)
+max_free_disk_space: 200000

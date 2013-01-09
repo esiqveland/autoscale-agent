@@ -54,5 +54,14 @@ public class YamlReader {
 		/* Input- and output port for communication with master */
 		Config.slave_input_port = (Integer)data.get("input_port");
 		Config.slave_output_port = (Integer)data.get("output_port");
+		
+		/* Set thresholds and timers - will be overwritten by update-message */
+		
+		Config.intervall_timer = (Integer)data.get("intervall_timer");
+		Config.threshold_breach_limit = (Integer)data.get("threshold_breach_limit");
+		Config.min_memory_usage = (Double)data.get("min_memory_usage");
+		Config.max_memory_usage = (Double)data.get("max_memory_usage");
+		Config.min_free_disk_space = (Long)data.get("min_free_disk_space");
+		Config.max_free_disk_space = (Long)data.get("max_free_disk_space");
 	}
 }
