@@ -133,32 +133,41 @@ public class AutoscaleAgentServer implements Runnable {
 	 */
 	private void updateConfig(AgentMessage msg) {
 		LOG.debug("Update configurations");
+		int count = 0;
 
 		if (msg.getMap().containsKey("intervall_timer")) {
+			count++;
 			Config.intervall_timer = (Integer) msg.getMap().get("intervall_timer");
 		}
 
 		if (msg.getMap().containsKey("threshold_breach_limit")) {
+			count++;
 			Config.threshold_breach_limit = (Integer) msg.getMap().get("threshold_breach_limit");
 		}
 
 		if (msg.getMap().containsKey("min_memory_usage")) {
+			count++;
 			Config.min_memory_usage = (Double) msg.getMap().get("min_memory_usage");
 		}
 
 		if (msg.getMap().containsKey("max_memory_usage")) {
+			count++;
 			Config.max_memory_usage = (Double) msg.getMap().get("max_memory_usage");
 		}
 
 		if (msg.getMap().containsKey("min_free_disk_space")) {
+			count++;
 			Config.min_free_disk_space = (Long) msg.getMap().get("min_free_disk_space");
 		}
 
 		if (msg.getMap().containsKey("max_free_disk_space")) {
+			count++;
 			Config.max_free_disk_space = (Long) msg.getMap().get("max_free_disk_space");
 		}
 
 		Config.master_host = (String) msg.getSenderHost();
+		count++;
+		LOG.info("Updated {} configuration-attribute(s)",count);
 		LOG.info("Connected with master host: {}", (String)msg.getSenderHost());
 	}
 
