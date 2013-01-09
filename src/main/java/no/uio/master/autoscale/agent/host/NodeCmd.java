@@ -9,13 +9,13 @@ public interface NodeCmd {
 	
 	public void startupNode() throws IOException, InterruptedException;
 	
-	public void shutdownNode(Integer pid) throws InterruptedException, IOException;
+	public void shutdownNode(List<Integer> pid) throws InterruptedException, IOException;
 	
 	public void disconnect();
 	
 	public void cleanDirectories() throws IOException;
 	
-	public Integer getProcessId();
+	public List<Integer> getProcessId();
 	
 	public List<String> getActiveNodes();
 	

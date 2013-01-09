@@ -10,13 +10,21 @@ import no.uio.master.autoscale.agent.config.Config;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mortbay.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CassandraNodeCmdINTTest {
+	private static Logger LOG = LoggerFactory.getLogger(CassandraNodeCmdINTTest.class);
+
 	private static NodeCmd nodeCmd;
-	private static Integer pid;
+	private static List<Integer> pid;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Runtime.getRuntime().exec("/Users/andreas/UiO/cassandra-runtime/1/apache-cassandra-1.1.5/bin/cassandra");
+		LOG.info("Starting node1...");
+		Thread.sleep(30000);
 		// Make sure proper loopback is initialized for 127.0.0.2
 		Runtime.getRuntime().exec("/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5/bin/cassandra -f");
 		Thread.sleep(1000);
@@ -51,6 +59,7 @@ public class CassandraNodeCmdINTTest {
 	@Test
 	public void testGetProcessId() {
 		pid = nodeCmd.getProcessId();
+		LOG.info("Number of processes: {}",pid.size());
 	}
 	
 	@Test

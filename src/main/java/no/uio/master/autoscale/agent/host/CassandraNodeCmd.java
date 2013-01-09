@@ -55,14 +55,14 @@ public class CassandraNodeCmd implements NodeCmd {
 	}
 
 	@Override
-	public void shutdownNode(Integer pid) throws InterruptedException, IOException {
-		LOG.debug("Shutdown process {}",pid);
+	public void shutdownNode(List<Integer> pidList) throws InterruptedException, IOException {
+		LOG.debug("Shutdown process(es): {}",pidList.toString());
 		if(!connect()) {
 			LOG.debug("NodeProbe not running");
 			return;
 		}
 		
-		if(null == pid) {
+		if(null == pidList || pidList.isEmpty()) {
 			LOG.debug("Cannot shutdown node. Process-id is missing");
 			return;
 		}
@@ -76,18 +76,21 @@ public class CassandraNodeCmd implements NodeCmd {
 			LOG.error("Failed to remove data ",e);
 		}
 		disconnect();
-		Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
+		
+		for(Integer pid : pidList) {
+			Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
+		}
 		
 		LOG.info("Shutdown complete");
 	}
 	
 	@Override
-	public Integer getProcessId() {
-		Integer pid = null;
+	public List<Integer> getProcessId() {
+		List<Integer> pid = new ArrayList<Integer>();
 		String[] args = new String[3];
 		args[0] = "pgrep";
 		args[1] = "-f";
-		args[2] = "cassandra";//Config.root;
+		args[2] = "cassandra";
 		
 		try {
 			Process p = Runtime.getRuntime().exec(args);
@@ -102,8 +105,12 @@ public class CassandraNodeCmd implements NodeCmd {
 			}
 			// If returned more than one, return last PID
 			String[] splitString = tempString.split("\\r?\\n");
-			pid = Integer.valueOf(splitString[splitString.length-1].trim());
-			LOG.debug("Process ID: {}",pid);
+			for(int i = 0; i < splitString.length; i++) {
+				Integer intValue = Integer.valueOf(splitString[i].trim());
+				pid.add(intValue);
+				LOG.debug("Found process id: {}",intValue);
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Failed to retrieve process id, process not found");
 		}
