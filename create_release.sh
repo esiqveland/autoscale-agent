@@ -30,6 +30,7 @@ mkdir -p $RELEASE_FOLDER/logs
 ## Copy content into folders
 ##
 
+cp $AS_HOME/LICENSE.txt $RELEASE_FOLDER/LICENSE.txt
 cp -r $AS_HOME/bin/* $RELEASE_FOLDER/bin/
 cp -r $AS_HOME/lib/* $RELEASE_FOLDER/lib/
 cp -r $AS_HOME/conf/* $RELEASE_FOLDER/conf/
