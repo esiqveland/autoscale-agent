@@ -35,7 +35,6 @@ public class YamlReader {
 		Config.startup_command = (String)data.get("startup_command");
 		Config.shutdown_command = (String)data.get("shutdown_command");
 		
-		@SuppressWarnings("unchecked")
 		LinkedHashMap<String, String> clr_dirs = (LinkedHashMap<String, String>)data.get("clear_directories");
 		Config.clean_directories = new ArrayList<String>();
 		
@@ -58,12 +57,12 @@ public class YamlReader {
 		
 		/* Set thresholds and timers - will be overwritten by update-message */
 		
-		Config.intervall_timer = Integer.parseInt((String)data.get("intervall_timer"));
-		Config.threshold_breach_limit = Integer.parseInt((String)data.get("threshold_breach_limit"));
-		Config.min_memory_usage = Double.parseDouble((String)data.get("min_memory_usage"));
-		Config.max_memory_usage = Double.parseDouble((String)data.get("max_memory_usage"));
-		Config.min_free_disk_space = Long.parseLong((String)data.get("min_free_disk_space"));
-		Config.max_free_disk_space = Long.parseLong((String)data.get("max_free_disk_space"));
+		Config.intervall_timer = (Integer)data.get("intervall_timer");
+		Config.threshold_breach_limit = (Integer)data.get("threshold_breach_limit");
+		Config.min_memory_usage = (Double)data.get("min_memory_usage");
+		Config.max_memory_usage = (Double)data.get("max_memory_usage");
+		Config.min_free_disk_space = Long.parseLong(((Integer)data.get("min_free_disk_space")).toString());
+		Config.max_free_disk_space = Long.parseLong(((Integer)data.get("max_free_disk_space")).toString());
 		
 	}
 }
