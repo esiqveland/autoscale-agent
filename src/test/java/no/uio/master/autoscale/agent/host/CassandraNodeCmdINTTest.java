@@ -26,8 +26,10 @@ public class CassandraNodeCmdINTTest {
 		LOG.info("Starting node1...");
 		Thread.sleep(30000);
 		// Make sure proper loopback is initialized for 127.0.0.2
+		LOG.info("Starting node2...");
 		Runtime.getRuntime().exec("/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5/bin/cassandra -f");
 		Thread.sleep(1000);
+		LOG.info("Startup complete");
 
 		Config.root = "/Users/andreas/UiO/cassandra-runtime/2/apache-cassandra-1.1.5";
 		Config.startup_command = "bin/cassandra";

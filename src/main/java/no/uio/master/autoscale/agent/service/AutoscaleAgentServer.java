@@ -54,7 +54,7 @@ public class AutoscaleAgentServer implements Runnable {
 					LOG.info("Message read: {}",msg);
 					performAction(msg);
 				} else {
-					LOG.error("Message not an AgentMessage - ", obj.getMessage().getClass().toString());
+					LOG.error("Message not an AgentMessage - ", obj.getMessage());
 				}
 			}
 		} catch (Exception e) {
