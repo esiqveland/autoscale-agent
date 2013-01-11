@@ -91,6 +91,7 @@ public class NodeStatus {
 			FileSystemUsage fsUsage;
 			for(String dir : Config.clean_directories) {
 				fsUsage = sigar.getFileSystemUsage(dir);
+				LOG.info("USED: {}, TOTAL: {}",fsUsage.getUsed(), fsUsage.getTotal());
 				space += (fsUsage.getUsed() / BYTES_IN_MB);
 			}
 		} catch (SigarException e) {
