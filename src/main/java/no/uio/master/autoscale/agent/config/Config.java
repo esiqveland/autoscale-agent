@@ -9,9 +9,8 @@ public class Config {
 	public static Integer threshold_breach_limit = 10;
 	public static Double min_memory_usage = 10.0;
 	public static Double max_memory_usage = 90.0;
-	public static Long min_free_disk_space = 60L;
-	public static Long max_free_disk_space = 20000L;
-	public static String storage_location = "/";
+	public static Long min_disk_space_used = 60L;
+	public static Long max_disk_space_used = 20000L;
 	public static volatile String master_host = "127.0.0.1";
 	
 	/* Communication-ports */

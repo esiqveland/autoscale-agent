@@ -37,7 +37,7 @@ public class NodeMonitor {
 		Long diskUsed = nodeStatus.getDiskSpaceUsed();
 		
 		// Minimums breach
-		if(diskUsed < Config.min_free_disk_space) {
+		if(diskUsed < Config.min_disk_space_used) {
 			diskMaxBreachTimer = 0;
 			diskMinBreachTimer += Config.intervall_timer;
 			
@@ -53,7 +53,7 @@ public class NodeMonitor {
 			}
 		}
 		// Maximum breach
-		else if(diskUsed > Config.max_free_disk_space) {
+		else if(diskUsed > Config.max_disk_space_used) {
 			diskMinBreachTimer = 0;
 			diskMaxBreachTimer += Config.intervall_timer;
 			

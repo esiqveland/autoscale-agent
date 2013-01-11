@@ -92,6 +92,12 @@
    				<excludes>
     					<exclude>${exclude.tests}</exclude>
    				</excludes>
+   				<systemProperties> 
+            		<property> 
+              			<name>java.library.path</name> 
+              			<value>${basedir}/lib/sigar-1.6.4</value> 
+        		    </property> 
+		          </systemProperties> 
 				 </configuration>
 		</plugin>
       

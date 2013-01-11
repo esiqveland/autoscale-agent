@@ -37,7 +37,7 @@ public class NodeStatus {
 		} catch (Exception e) {
 			LOG.error("Failed to get memory usage ",e);
 		}
-		
+		LOG.debug("Memory usage: {}%",memUsed);
 		return memUsed;
 	}
 	
@@ -54,6 +54,7 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve CPU-usage ",e);
 		}
 		
+		LOG.debug("CPU used: {}%",cpuUsed);
 		return cpuUsed;
 	}
 
@@ -62,15 +63,20 @@ public class NodeStatus {
 	 * @return
 	 */
 	public Double getDiskUsage() {
-		Double diskUsed = 0.0;
+		Long space = 0L;
 		
 		try {
-			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
-			diskUsed = fsUsage.getUsePercent();
+			FileSystemUsage fsUsage;
+			for(String dir : Config.clean_directories) {
+				fsUsage = sigar.getFileSystemUsage(dir);
+				space += (fsUsage.getUsed() / BYTES_IN_MB);
+			}
 		} catch (SigarException e) {
-			LOG.error("Failed to retrieve disk usage ",e);
+			LOG.error("Failed to retrieve disk space used in megabytes ",e);
 		} 
 		
+		Double diskUsed = ((double)space / (double)Config.max_disk_space_used) * 100;
+		LOG.debug("Diskspace used: {}%",diskUsed);
 		return diskUsed;
 	}
 	
@@ -82,12 +88,16 @@ public class NodeStatus {
 		Long space = 0L;
 		
 		try {
-			FileSystemUsage fsUsage = sigar.getFileSystemUsage(Config.storage_location);
-			space = fsUsage.getUsed() / BYTES_IN_MB;
+			FileSystemUsage fsUsage;
+			for(String dir : Config.clean_directories) {
+				fsUsage = sigar.getFileSystemUsage(dir);
+				space += (fsUsage.getUsed() / BYTES_IN_MB);
+			}
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve disk space used in megabytes ",e);
 		} 
 		
+		LOG.debug("Diskspace used: {}MB",space);
 		return space;
 	}
 }

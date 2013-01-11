@@ -75,6 +75,7 @@ public class AutoscaleAgentServer implements Runnable {
 		switch (msg.getType()) {
 		case STARTUP_NODE:
 			nodeCmd.startupNode();
+		case START_AGENT:
 			initAgent();
 		case UPDATE:
 			updateConfig(msg);
@@ -82,16 +83,6 @@ public class AutoscaleAgentServer implements Runnable {
 
 		case STOP_AGENT:
 			stopAgent();
-			break;
-
-		case START_AGENT:
-			updateConfig(msg);
-			initAgent();
-			
-			// Startup Cassandra if not already running
-			if(nodeCmd.getProcessId() == null) {
-				nodeCmd.startupNode();
-			}
 			break;
 
 		case SHUTDOWN_NODE:
@@ -160,14 +151,14 @@ public class AutoscaleAgentServer implements Runnable {
 			Config.max_memory_usage = (Double) msg.getMap().get("max_memory_usage");
 		}
 
-		if (msg.getMap().containsKey("min_free_disk_space")) {
+		if (msg.getMap().containsKey("min_disk_space_used")) {
 			count++;
-			Config.min_free_disk_space = (Long) msg.getMap().get("min_free_disk_space");
+			Config.min_disk_space_used = (Long) msg.getMap().get("min_disk_space_used");
 		}
 
-		if (msg.getMap().containsKey("max_free_disk_space")) {
+		if (msg.getMap().containsKey("max_disk_space_used")) {
 			count++;
-			Config.max_free_disk_space = (Long) msg.getMap().get("max_free_disk_space");
+			Config.max_disk_space_used = (Long) msg.getMap().get("max_disk_space_used");
 		}
 
 		Config.master_host = (String) msg.getSenderHost();

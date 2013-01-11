@@ -41,10 +41,6 @@ public class YamlReader {
 		for (Iterator<Entry<String, String>> iterator = clr_dirs.entrySet().iterator(); iterator.hasNext();) {
 			Entry<String, String> entry = iterator.next();
 			 Config.clean_directories.add(entry.getValue());
-			 
-			 if(entry.getKey().equals("data")) {
-				 Config.storage_location = entry.getValue();
-			 }
 		}
 		
 		/* Configure JMX communication */
@@ -61,8 +57,8 @@ public class YamlReader {
 		Config.threshold_breach_limit = (Integer)data.get("threshold_breach_limit");
 		Config.min_memory_usage = (Double)data.get("min_memory_usage");
 		Config.max_memory_usage = (Double)data.get("max_memory_usage");
-		Config.min_free_disk_space = Long.parseLong(((Integer)data.get("min_free_disk_space")).toString());
-		Config.max_free_disk_space = Long.parseLong(((Integer)data.get("max_free_disk_space")).toString());
+		Config.min_disk_space_used = Long.parseLong(((Integer)data.get("min_disk_space_used")).toString());
+		Config.max_disk_space_used = Long.parseLong(((Integer)data.get("max_disk_space_used")).toString());
 		
 	}
 }
