@@ -45,7 +45,7 @@ min_memory_usage: 10.0
 max_memory_usage: 90.0
 
 # Minimum disk space used before breach (MB)
-min_disk_space_used: 100
+min_disk_space_used: 200
 
 # Maximum disk space used before breach (MB)
 max_disk_space_used: 2000
