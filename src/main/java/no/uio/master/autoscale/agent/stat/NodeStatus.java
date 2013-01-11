@@ -2,7 +2,7 @@ package no.uio.master.autoscale.agent.stat;
 
 import no.uio.master.autoscale.agent.config.Config;
 
-import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.DirUsage;
 import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
@@ -20,8 +20,7 @@ public class NodeStatus {
 	private static Logger LOG = LoggerFactory.getLogger(NodeStatus.class);
 	private static Sigar sigar;
 
-	private static final Long BYTES_IN_MB = 1048576L;
-
+	private static Long BYTES_TO_MB = 1024*1024L;
 	public NodeStatus() {
 		sigar = new Sigar();
 	}
@@ -68,20 +67,19 @@ public class NodeStatus {
 	 * @return
 	 */
 	public Double getDiskUsage() {
-		Long space = 0L;
+		Long spaceInBytes = 0L;
 
 		try {
+			DirUsage dirUsage;
 			String dir = Config.clean_directories.containsKey("data") ? Config.clean_directories.get("data") : "/";
-			FileSystemUsage fsUsage;
-
-			fsUsage = sigar.getFileSystemUsage(dir);
-			space = (fsUsage.getUsed() / BYTES_IN_MB);
+			dirUsage = sigar.getDirUsage(dir);
+			spaceInBytes = dirUsage.getDiskUsage();
 
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve disk space used in megabytes ", e);
 		}
-
-		Double diskUsed = ((double) space / (double) Config.max_disk_space_used) * 100;
+		
+		Double diskUsed = ((double) (spaceInBytes / BYTES_TO_MB) / (double) Config.max_disk_space_used) * 100;
 		LOG.debug("Diskspace used: {}%", diskUsed);
 		return diskUsed;
 	}
@@ -95,11 +93,10 @@ public class NodeStatus {
 		Long space = 0L;
 
 		try {
-			FileSystemUsage fsUsage;
+			DirUsage dirUsage;
 			String dir = Config.clean_directories.containsKey("data") ? Config.clean_directories.get("data") : "/";
-			
-			fsUsage = sigar.getFileSystemUsage(dir);
-			space = (fsUsage.getUsed() / BYTES_IN_MB);
+			dirUsage = sigar.getDirUsage(dir);
+			space = (dirUsage.getDiskUsage() / BYTES_TO_MB);
 			
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve disk space used in megabytes ", e);

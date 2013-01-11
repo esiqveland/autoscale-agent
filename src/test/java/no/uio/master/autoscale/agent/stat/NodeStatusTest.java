@@ -53,7 +53,6 @@ public class NodeStatusTest {
 	public void testGetDiskSpaceUsed() {
 		Long diskUsage = nodeStatus.getDiskSpaceUsed();
 		Assert.assertNotNull(diskUsage);
-		Assert.assertNotSame(0L, diskUsage.longValue());
 	}
 
 }
