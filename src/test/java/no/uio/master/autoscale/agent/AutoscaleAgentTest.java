@@ -11,7 +11,6 @@ public class AutoscaleAgentTest {
 	@Test
 	public void testStartup() throws InterruptedException {
 		AutoscaleAgent.main(new String[0]);
-		Thread.sleep(5000L);
 	}
 
 }

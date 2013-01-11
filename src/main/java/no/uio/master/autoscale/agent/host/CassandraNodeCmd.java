@@ -119,6 +119,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			LOG.error("Failed to retrieve process id, process not found");
 		}
 
+		LOG.info("Process ID: {}",pid);
 		return pid;
 	}
 

@@ -87,6 +87,11 @@ public class AutoscaleAgentServer implements Runnable {
 		case START_AGENT:
 			updateConfig(msg);
 			initAgent();
+			
+			// Startup Cassandra if not already running
+			if(nodeCmd.getProcessId() == null) {
+				nodeCmd.startupNode();
+			}
 			break;
 
 		case SHUTDOWN_NODE:
