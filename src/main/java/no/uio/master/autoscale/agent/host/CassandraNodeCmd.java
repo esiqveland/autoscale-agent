@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import no.uio.master.autoscale.agent.config.Config;
 
@@ -137,10 +139,10 @@ public class CassandraNodeCmd implements NodeCmd {
 
 	@Override
 	public void cleanDirectories() throws IOException {
-		for (String dir : Config.clean_directories) {
-			LOG.debug("Wipe data from: {}", dir);
-			FileUtils.deleteDirectory(new File(dir));
-			recreateDeletedFolder(dir);
+		for (Entry<String, String> dir : Config.clean_directories.entrySet()) {
+			LOG.debug("Wipe content from: {}", dir.getValue());
+			FileUtils.deleteDirectory(new File(dir.getValue()));
+			recreateDeletedFolder(dir.getValue());
 		}
 	}
 

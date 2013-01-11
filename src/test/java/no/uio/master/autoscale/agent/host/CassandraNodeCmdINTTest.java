@@ -1,7 +1,7 @@
 package no.uio.master.autoscale.agent.host;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -10,7 +10,6 @@ import no.uio.master.autoscale.agent.config.Config;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +36,10 @@ public class CassandraNodeCmdINTTest {
 		Config.node_port = 8002;
 		nodeCmd = new CassandraNodeCmd(Config.node_address, Config.node_port);
 
-		Config.clean_directories = new ArrayList<String>();
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/data");
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/commitlog");
-		Config.clean_directories.add("/Users/andreas/UiO/cassandra-runtime/2/saved_caches");
+		Config.clean_directories = new HashMap<String, String>();
+		Config.clean_directories.put("data", "/Users/andreas/UiO/cassandra-runtime/2/data");
+		Config.clean_directories.put("commitlog", "/Users/andreas/UiO/cassandra-runtime/2/commitlog");
+		Config.clean_directories.put("saved_caches", "/Users/andreas/UiO/cassandra-runtime/2/saved_caches");
 	}
 
 	@AfterClass

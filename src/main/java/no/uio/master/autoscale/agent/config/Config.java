@@ -1,7 +1,7 @@
 package no.uio.master.autoscale.agent.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
 
@@ -24,7 +24,7 @@ public class Config {
 	public static String startup_command = "bin/cassandra";
 	public static String shutdown_command = "kill %d";
 	
-	public static List<String> clean_directories = new ArrayList<String>();
+	public static Map<String, String> clean_directories = new HashMap<String, String>();
 	
 	public static Process runtime_process = null;
 	

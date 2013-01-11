@@ -1,6 +1,10 @@
 package no.uio.master.autoscale.agent.stat;
 
 import static org.junit.Assert.*;
+
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+
 import junit.framework.Assert;
 
 import no.uio.master.autoscale.agent.config.YamlReader;
