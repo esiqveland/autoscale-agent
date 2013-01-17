@@ -44,7 +44,7 @@ public class NodeStatus {
 		} catch (Exception e) {
 			LOG.error("Failed to get memory usage ", e);
 		}
-		LOG.info("Memory usage: {}%", memUsed);
+		LOG.debug("Memory usage: {}%", memUsed);
 		return memUsed;
 	}
 
@@ -61,7 +61,7 @@ public class NodeStatus {
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve CPU-usage ", e);
 		}
-		LOG.info("CPU used: {}%", cpuUsed);
+		LOG.debug("CPU used: {}%", cpuUsed);
 		return cpuUsed;
 	}
 
@@ -85,7 +85,7 @@ public class NodeStatus {
 		
 		Double diskUsed = ((spaceInBytes / BYTES_TO_MB.doubleValue()) / Config.max_disk_space_used) * 100;
 		diskUsed = NodeStatus.doubleFormatted(diskUsed);
-		LOG.info("Diskspace used: {}%", diskUsed);
+		LOG.debug("Diskspace used: {}%", diskUsed);
 		return diskUsed;
 	}
 
@@ -103,7 +103,7 @@ public class NodeStatus {
 			dirUsage = sigar.getDirUsage(dir);
 			space = (dirUsage.getDiskUsage() / BYTES_TO_MB);
 			
-			// For logging purpose
+			// For debug/logging purpose
 			diskSpace = dirUsage.getDiskUsage() / BYTES_TO_MB.doubleValue();
 			diskSpace = NodeStatus.doubleFormatted(diskSpace);
 			
@@ -111,7 +111,7 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve disk space used in megabytes ", e);
 		}
 
-		LOG.info("Disk usage {}MB",diskSpace);
+		LOG.debug("Disk usage {}MB",diskSpace);
 		return space;
 	}
 	
