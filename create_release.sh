@@ -25,7 +25,6 @@ mkdir -p $RELEASE_FOLDER/lib
 mkdir -p $RELEASE_FOLDER/target
 mkdir -p $RELEASE_FOLDER/conf
 mkdir -p $RELEASE_FOLDER/logs
-mkdir -p $RELEASE_FOLDER/stress-test
 
 ##
 ## Copy content into folders
@@ -36,7 +35,6 @@ cp -r $AS_HOME/bin/* $RELEASE_FOLDER/bin/
 cp -r $AS_HOME/lib/* $RELEASE_FOLDER/lib/
 cp -r $AS_HOME/conf/* $RELEASE_FOLDER/conf/
 cp -r $AS_HOME/target/autoscale-agent-$VERSION.jar $RELEASE_FOLDER/target/autoscale-agent-$VERSION.jar
-cp -r $AS_HOME/stress-test/* $RELEASE_FOLDER/stress-test/
 
 ##
 ## Create tarball file for release

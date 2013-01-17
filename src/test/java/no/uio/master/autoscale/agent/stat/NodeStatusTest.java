@@ -1,19 +1,11 @@
 package no.uio.master.autoscale.agent.stat;
 
-import static org.junit.Assert.*;
-
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-
 import junit.framework.Assert;
-
 import no.uio.master.autoscale.agent.config.YamlReader;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NodeStatusTest {
 	private static NodeStatus nodeStatus;

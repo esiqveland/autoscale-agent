@@ -52,6 +52,5 @@ public class YamlReader {
 		Config.max_memory_usage = (Double) data.get("max_memory_usage");
 		Config.min_disk_space_used = Long.parseLong(((Integer) data.get("min_disk_space_used")).toString());
 		Config.max_disk_space_used = Long.parseLong(((Integer) data.get("max_disk_space_used")).toString());
-
 	}
 }

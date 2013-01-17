@@ -54,11 +54,11 @@ public class CassandraNodeCmd implements NodeCmd {
 			return;
 		}
 
-		LOG.info("Startup node {}", address);
+		LOG.info("Startup cassandra-node {}", address);
 		Runtime.getRuntime().exec(Config.root + "/" + Config.startup_command);
 		// Sleep to stay synchronized with the Cassandra-startup
 		Thread.sleep(30000 * 3);
-		LOG.debug("Startup completed");
+		LOG.info("Startup cassandra-node completed");
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			return;
 		}
 
-		LOG.info("Shutdown node");
+		LOG.info("Shutdown node started");
 		nodeProbe.decommission();
 
 		try {
@@ -85,7 +85,7 @@ public class CassandraNodeCmd implements NodeCmd {
 		disconnect();
 
 		Runtime.getRuntime().exec(String.format(Config.shutdown_command, pid.intValue()));
-		LOG.info("Shutdown complete");
+		LOG.info("Shutdown node completed");
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			LOG.error("Failed to retrieve process id, process not found");
 		}
 
-		LOG.info("Process ID: {}",pid);
+		LOG.debug("Process id: {}",pid);
 		return pid;
 	}
 
@@ -131,6 +131,7 @@ public class CassandraNodeCmd implements NodeCmd {
 			try {
 				nodeProbe.close();
 				nodeProbe = null;
+				LOG.debug("Disconnected from node {}",address);
 			} catch (IOException e) {
 				LOG.error("Failed while closing connection to Node: " + address);
 			}

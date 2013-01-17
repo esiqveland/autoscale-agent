@@ -1,9 +1,10 @@
 package no.uio.master.autoscale.agent.stat;
 
+import java.text.DecimalFormat;
+
 import no.uio.master.autoscale.agent.config.Config;
 
 import org.hyperic.sigar.DirUsage;
-import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
@@ -15,6 +16,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author andreas
  * 
+ */
+/**
+ * @author andreas
+ *
  */
 public class NodeStatus {
 	private static Logger LOG = LoggerFactory.getLogger(NodeStatus.class);
@@ -35,11 +40,11 @@ public class NodeStatus {
 		Mem mem;
 		try {
 			mem = sigar.getMem();
-			memUsed = mem.getUsedPercent();
+			memUsed = NodeStatus.doubleFormatted(mem.getUsedPercent());
 		} catch (Exception e) {
 			LOG.error("Failed to get memory usage ", e);
 		}
-		LOG.debug("Memory usage: {}%", memUsed);
+		LOG.info("Memory usage: {}%", memUsed);
 		return memUsed;
 	}
 
@@ -52,12 +57,11 @@ public class NodeStatus {
 		Double cpuUsed = 0.0;
 
 		try {
-			cpuUsed = sigar.getCpuPerc().getCombined();
+			cpuUsed = NodeStatus.doubleFormatted(sigar.getCpuPerc().getCombined());
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve CPU-usage ", e);
 		}
-
-		LOG.debug("CPU used: {}%", cpuUsed);
+		LOG.info("CPU used: {}%", cpuUsed);
 		return cpuUsed;
 	}
 
@@ -79,8 +83,9 @@ public class NodeStatus {
 			LOG.error("Failed to retrieve disk space used in megabytes ", e);
 		}
 		
-		Double diskUsed = ((double) (spaceInBytes / BYTES_TO_MB) / (double) Config.max_disk_space_used) * 100;
-		LOG.debug("Diskspace used: {}%", diskUsed);
+		Double diskUsed = ((spaceInBytes / BYTES_TO_MB.doubleValue()) / Config.max_disk_space_used) * 100;
+		diskUsed = NodeStatus.doubleFormatted(diskUsed);
+		LOG.info("Diskspace used: {}%", diskUsed);
 		return diskUsed;
 	}
 
@@ -91,18 +96,27 @@ public class NodeStatus {
 	 */
 	public Long getDiskSpaceUsed() {
 		Long space = 0L;
-
+		Double diskSpace = 0.0;
 		try {
 			DirUsage dirUsage;
 			String dir = Config.clean_directories.containsKey("data") ? Config.clean_directories.get("data") : "/";
 			dirUsage = sigar.getDirUsage(dir);
 			space = (dirUsage.getDiskUsage() / BYTES_TO_MB);
 			
+			// For logging purpose
+			diskSpace = dirUsage.getDiskUsage() / BYTES_TO_MB.doubleValue();
+			diskSpace = NodeStatus.doubleFormatted(diskSpace);
+			
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve disk space used in megabytes ", e);
 		}
 
-		LOG.debug("Diskspace used: {}MB", space);
+		LOG.info("Disk usage {}MB",diskSpace);
 		return space;
+	}
+	
+	private static Double doubleFormatted(Double val) {
+		DecimalFormat twoDForm = new DecimalFormat("#.###");
+		return Double.valueOf(twoDForm.format(val));
 	}
 }

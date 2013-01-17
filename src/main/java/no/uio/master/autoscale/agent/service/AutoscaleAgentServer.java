@@ -50,8 +50,6 @@ public class AutoscaleAgentServer implements Runnable {
 				if(obj.getMessage() instanceof AgentMessage) {
 					AgentMessage msg = (AgentMessage) obj.getMessage();
 					msg.setSenderHost(obj.getSenderIp());
-					
-					LOG.info("Message read: {}",msg);
 					performAction(msg);
 				} else {
 					LOG.error("Message not an AgentMessage - ", obj.getMessage());
@@ -164,7 +162,6 @@ public class AutoscaleAgentServer implements Runnable {
 		Config.master_host = (String) msg.getSenderHost();
 		count++;
 		LOG.info("Updated {} configuration-attribute(s)",count);
-		LOG.info("Connected with master host: {}", (String)msg.getSenderHost());
 	}
 
 	/**

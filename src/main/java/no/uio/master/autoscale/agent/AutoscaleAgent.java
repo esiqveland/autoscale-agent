@@ -27,7 +27,7 @@ public class AutoscaleAgent {
 	private static int INTERVALL_TIMER = Config.intervall_timer;
 
 	public static void main(String[] args) {
-		LOG.info("Autoscale agent invoked...");
+		LOG.info("Autoscale agent initializing");
 		try {
 			server = new AutoscaleAgentServer();
 		} catch (IOException e) {
@@ -35,6 +35,6 @@ public class AutoscaleAgent {
 		}
 		executor = Executors.newSingleThreadScheduledExecutor();
 		executor.scheduleAtFixedRate(server, 0, INTERVALL_TIMER, TimeUnit.SECONDS);
-		LOG.debug("Invoked");
+		LOG.info("Autoscale agent initialized");
 	}
 }
