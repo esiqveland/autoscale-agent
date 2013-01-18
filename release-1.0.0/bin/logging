@@ -17,15 +17,16 @@ OUTPUT="$TIMESTAMP $1"
 echo $OUTPUT >> $LOGFILE
 }
 
-
-
 ###########################
 ##			OUTPUT		 ##
 ###########################
 
 while [ 1 ];
 do 
-  
+
+	## - Update current timestamp - ##
+	TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
+	
 	## - DiskUsage - ##
 	DISK_USAGE=$(du -sh "$DATA_FOLDER" | awk '{print $1}')
 	output "DiskUsage: $DISK_USAGE"
@@ -37,11 +38,11 @@ do
 	output "MemoryUsage: $MEMORY_USAGE kB"
 	
 	## - CPUUsage - ##
-	CPU_USAGE=$(mpstat | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
+	CPU_USAGE=$(/Users/andreas/mpstat_fake | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
 	output "CPUUsage: $CPU_USAGE"
 
 	## - Sleep n-seconds - ##  
-  	sleep $(INTERVALL_TIMER);
+  	sleep $INTERVALL_TIMER
   	
   	
 done
