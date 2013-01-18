@@ -9,6 +9,8 @@ DATA_FOLDER=/Users/andreas/UiO/cassandra-runtime/1/data
 
 LOGFILE="../logs/thesis-data.log"
 TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
+INTERVALL_TIMER=5
+
 
 function output {
 OUTPUT="$TIMESTAMP $1"
@@ -16,19 +18,30 @@ echo $OUTPUT >> $LOGFILE
 }
 
 
-## -- Outputs --##
 
-## - DiskUsage - ##
-DISK_USAGE=$(du -sh "$DATA_FOLDER" | awk '{print $1}')
-output "DiskUsage: $DISK_USAGE"
+###########################
+##			OUTPUT		 ##
+###########################
 
-## - MemoryUsage (kB)- ##
-MEM_TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-MEM_FREE=$(grep MemFree /proc/meminfo | awk '{print $2}')
-MEMORY_USAGE=$(($MEM_TOTAL - $MEM_FREE))
-output "MemoryUsage: $MEMORY_USAGE"
+while [ 1 ];
+do 
+  
+	## - DiskUsage - ##
+	DISK_USAGE=$(du -sh "$DATA_FOLDER" | awk '{print $1}')
+	output "DiskUsage: $DISK_USAGE"
+	
+	## - MemoryUsage (kB)- ##
+	MEM_TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+	MEM_FREE=$(grep MemFree /proc/meminfo | awk '{print $2}')
+	MEMORY_USAGE=$(($MEM_TOTAL - $MEM_FREE))
+	output "MemoryUsage: $MEMORY_USAGE kB"
+	
+	## - CPUUsage - ##
+	CPU_USAGE=$(mpstat | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
+	output "CPUUsage: $CPU_USAGE"
 
-## - CPUUsage - ##
-
-CPU_USAGE=$(mpstat | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
-output "CPUUsage: $CPU_USAGE"
+	## - Sleep n-seconds - ##  
+  	sleep $(INTERVALL_TIMER);
+  	
+  	
+done
