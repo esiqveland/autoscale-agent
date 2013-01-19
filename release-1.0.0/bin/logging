@@ -11,6 +11,11 @@ LOGFILE="../logs/thesis-data.log"
 TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
 INTERVALL_TIMER=5
 
+#
+# 5 * 60 = 5 minutes
+#
+MAX_SECONDS=$(( 5 * 60 ))
+
 
 function output {
 OUTPUT="$TIMESTAMP $1"
@@ -20,29 +25,42 @@ echo $OUTPUT >> $LOGFILE
 ###########################
 ##			OUTPUT		 ##
 ###########################
+divider==================
+divider=$divider$divider$divider$divider$divider
 
-while [ 1 ];
+
+header="\n %-10s %26s %20s %15s\n"
+format=" %-10s %16s %20s %15s\n"
+
+width=76
+
+printf "$header" "TIMESTAMP" "DISK USAGE" "MEMORY USAGE" "CPU USAGE" >> $LOGFILE
+printf "%$width.${width}s\n" "$divider" >> $LOGFILE
+
+
+COUNTER=0
+while [ $COUNTER -le $MAX_SECONDS ];
 do 
-
 	## - Update current timestamp - ##
 	TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
 	
 	## - DiskUsage - ##
 	DISK_USAGE=$(du -sh "$DATA_FOLDER" | awk '{print $1}')
-	output "DiskUsage: $DISK_USAGE"
 	
 	## - MemoryUsage (kB)- ##
 	MEM_TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
 	MEM_FREE=$(grep MemFree /proc/meminfo | awk '{print $2}')
 	MEMORY_USAGE=$(($MEM_TOTAL - $MEM_FREE))
-	output "MemoryUsage: $MEMORY_USAGE kB"
+	MEMORY_USAGE="$MEMORY_USAGE kB"
 	
 	## - CPUUsage - ##
-	CPU_USAGE=$(/Users/andreas/mpstat_fake | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
-	output "CPUUsage: $CPU_USAGE"
+	CPU_USAGE=$(mpstat | awk '$12 ~ /[0-9.]+/ { print 100 - $12"%" }')
+
+	## -- Output to file -- ##
+	printf "$format" "$TIMESTAMP" "$DISK_USAGE" "$MEMORY_USAGE" "$CPU_USAGE" >> $LOGFILE
 
 	## - Sleep n-seconds - ##  
   	sleep $INTERVALL_TIMER
-  	
+  	COUNTER=$((COUNTER + INTERVALL_TIMER))
   	
 done
