@@ -11,10 +11,9 @@ LOGFILE="../logs/thesis-data.log"
 TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
 INTERVALL_TIMER=5
 
-#
-# 5 * 60 = 5 minutes
-#
-MAX_SECONDS=$(( 5 * 60 ))
+############ LENGTH OF TEST ###############
+MINUTES=15
+MAX_SECONDS=$(( $MINUTES * 60 ))
 
 
 function output {
