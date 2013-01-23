@@ -7,7 +7,7 @@
 
 DATA_FOLDER=/Users/andreas/UiO/cassandra-runtime/1/data
 
-LOGFILE="../logs/thesis-data.log"
+LOGFILE="./logs/thesis-data.log"
 TIMESTAMP="$(date "+%Y-%m-%d %H:%M:%S") "
 INTERVALL_TIMER=5
 

@@ -31,6 +31,7 @@ mkdir -p $RELEASE_FOLDER/logs
 ##
 
 cp $AS_HOME/LICENSE.txt $RELEASE_FOLDER/LICENSE.txt
+CP $AS_HOME/start_test.sh $RELEASE_FOLDER/start_test.sh
 cp -r $AS_HOME/bin/* $RELEASE_FOLDER/bin/
 cp -r $AS_HOME/lib/* $RELEASE_FOLDER/lib/
 cp -r $AS_HOME/conf/* $RELEASE_FOLDER/conf/
