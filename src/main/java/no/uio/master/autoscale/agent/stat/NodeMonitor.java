@@ -27,8 +27,17 @@ public class NodeMonitor {
 	public void monitor() {
 		monitorMemory();
 		monitorDisk();
+        monitorCPU();
 	}
-	
+
+    private void monitorCPU(){
+        double cpuUsed = nodeStatus.getCPUUsage();
+
+        //TODO: do something with the cpu info.s
+
+
+    }
+
 	/**
 	 * Monitor current disk-usage in bytes
 	 * @return
