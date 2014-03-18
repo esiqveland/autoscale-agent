@@ -40,6 +40,7 @@ public class AutoscaleAgentServer implements Runnable {
 		nodeCmd = new CassandraNodeCmd(Config.node_address, Config.node_port);
 		communicator = new Communicator(Config.slave_input_port, Config.slave_output_port);
 		LOG.info("Listen-server started");
+        initAgent();
 	}
 
 	@Override
