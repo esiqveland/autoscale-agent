@@ -11,7 +11,7 @@ public class Config {
 	public static Double max_memory_usage = 90.0;
 	public static Long min_disk_space_used = 60L;
 	public static Long max_disk_space_used = 20000L;
-	public static volatile String master_host = "127.0.0.1";
+	public static volatile String master_host = "158.38.222.103";
 	
 	/* Communication-ports */
 	public static Integer slave_input_port = 7799;
