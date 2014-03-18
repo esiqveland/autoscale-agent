@@ -13,7 +13,7 @@ shutdown_command: kill %d
 clear_directories:
   data: /home/king/src/masteroppgave/voldemort/data/bdb
   commitlog: /home/king/documents/commitlog
-  saved_caches: /home/saved_caches
+  saved_caches: /home/king/documents/saved_caches
   
 
 #
