@@ -57,7 +57,7 @@ public class NodeStatus {
 		Double cpuUsed = 0.0;
 
 		try {
-			cpuUsed = NodeStatus.doubleFormatted(sigar.getCpuPerc().getCombined());
+			cpuUsed = 100*NodeStatus.doubleFormatted(sigar.getCpuPerc().getCombined());
 		} catch (SigarException e) {
 			LOG.error("Failed to retrieve CPU-usage ", e);
 		}
